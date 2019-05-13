@@ -1,6 +1,6 @@
-package com.schuwalow.zio.todo.repository
-import com.schuwalow.zio.todo._
-import com.schuwalow.zio.todo.repository.DoobieRepository.SQL
+package clover.tsp.front.repository
+import clover.tsp.front._
+import clover.tsp.front.repository.DoobieRepository.SQL
 import doobie._
 import doobie.implicits._
 import scalaz.zio.interop.catz._

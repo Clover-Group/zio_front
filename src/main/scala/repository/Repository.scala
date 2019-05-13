@@ -1,6 +1,6 @@
-package com.schuwalow.zio.todo.repository
+package clover.tsp.front.repository
 
-import com.schuwalow.zio.todo.{TodoItem, TodoItemPostForm, TodoItemPatchForm, TodoId}
+import clover.tsp.front.{TodoItem, TodoItemPostForm, TodoItemPatchForm, TodoId}
 import scalaz.zio._
 
 trait Repository extends Serializable {

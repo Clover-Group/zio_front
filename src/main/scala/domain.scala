@@ -1,4 +1,4 @@
-package com.schuwalow.zio.todo
+package clover.tsp.front
 
 final case class TodoId(value: Long) extends AnyVal
 

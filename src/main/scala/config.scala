@@ -1,4 +1,4 @@
-package com.schuwalow.zio.todo
+package clover.tsp.front
 
 import doobie.hikari._
 import doobie.util.transactor.Transactor

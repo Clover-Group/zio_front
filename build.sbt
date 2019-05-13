@@ -11,7 +11,7 @@ val CatsCoreVersion="2.0.0-M1"
 val KindProjVersion = "0.9.3"
 val BetterMonadicForVersion = "0.3.0"
 val ZioVersion = "1.0-RC4"
-
+val ScalaTestVersion = "3.0.5"
 
 val DoobieVersion = "0.7.0-M5"
 val H2Version = "1.4.199"
@@ -31,22 +31,18 @@ lazy val root = (project in file("."))
       "org.http4s"      %% "http4s-blaze-client"  % Http4sVersion,
       "org.http4s"      %% "http4s-circe"         % Http4sVersion,
       "org.http4s"      %% "http4s-dsl"           % Http4sVersion,
+      "io.circe"        %% "circe-generic"        % CirceVersion,
 
       "org.tpolecat"    %% "doobie-core"          % DoobieVersion,
       "org.tpolecat"    %% "doobie-h2"            % DoobieVersion,
       "org.tpolecat"    %% "doobie-hikari"        % DoobieVersion,
 
       "com.h2database"  %  "h2"                   % H2Version,
-
       "org.flywaydb"    %  "flyway-core"          % FlywayVersion,
 
-      "io.circe"        %% "circe-generic"        % CirceVersion,
-
-      //"org.specs2"      %% "specs2-core"          % Specs2Version % "test",
       //"ch.qos.logback"   % "logback-classic"      % LogbackVersion, 
-
-      //"org.typelevel"   %% "cats-core"            % CatsCoreVersion, 
-      //"org.typelevel"   %% "cats-effect"          % CatsEffectVersion,
+      "org.scalactic"   %% "scalactic"            % ScalaTestVersion,
+      "org.scalatest"   %% "scalatest"            % ScalaTestVersion,
 
       "com.github.pureconfig" %% "pureconfig"     % PureConfigVersion,
       "com.github.pureconfig" %% "pureconfig-cats-effect" % PureConfigVersion, 

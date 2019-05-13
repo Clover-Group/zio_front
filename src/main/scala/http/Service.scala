@@ -1,7 +1,7 @@
-package com.schuwalow.zio.todo.http
+package clover.tsp.front.http
 
-import com.schuwalow.zio.todo._
-import com.schuwalow.zio.todo.repository._
+import clover.tsp.front._
+import clover.tsp.front.repository._
 import io.circe.generic.auto._
 import io.circe.{Decoder, Encoder}
 import org.http4s._

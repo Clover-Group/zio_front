@@ -1,9 +1,9 @@
-package com.schuwalow.zio.todo
+package clover.tsp.front
 
 import cats.effect._
-import com.schuwalow.zio.todo.config._
-import com.schuwalow.zio.todo.http.TodoService
-import com.schuwalow.zio.todo.repository._
+import clover.tsp.front.config._
+import clover.tsp.front.http.TodoService
+import clover.tsp.front.repository._
 import fs2.Stream.Compiler._
 import org.http4s.implicits._
 import org.http4s.server.Router
