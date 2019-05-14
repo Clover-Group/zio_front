@@ -1,7 +1,7 @@
 
 val FS2Version        = "1.0.4"
 val Http4sVersion     = "0.20.0"
-val CirceVersion      = "0.11.1"
+val CirceVersion      = "0.12.0-M1"
 val Specs2Version     = "4.1.0"
 val LogbackVersion    = "1.2.3"
 val ScalaLogVersion   = "3.9.2"
