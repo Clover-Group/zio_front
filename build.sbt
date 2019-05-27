@@ -14,7 +14,7 @@ val FlywayVersion     = "5.2.4"
 
 val KindProjVersion = "0.9.10"
 val BetterMonadicForVersion = "0.3.0"
-resolvers += Resolver.sonatypeRepo("releases")
+//resolvers += Resolver.sonatypeRepo("releases")
 
 lazy val root = (project in file("."))
   .settings(
@@ -50,8 +50,8 @@ lazy val root = (project in file("."))
       "org.scalaz"                  %% "scalaz-zio"                 % ZioVersion,
       "org.scalaz"                  %% "scalaz-zio-interop-cats"    % ZioVersion,
 
-      compilerPlugin("org.spire-math" %% "kind-projector"           % KindProjVersion),
-      compilerPlugin("com.olegpy"     %% "better-monadic-for"       % BetterMonadicForVersion)
+      //compilerPlugin("org.spire-math" %% "kind-projector"           % KindProjVersion),
+      //compilerPlugin("com.olegpy"     %% "better-monadic-for"       % BetterMonadicForVersion)
     )
   )
 
