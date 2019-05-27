@@ -10,6 +10,8 @@ import org.http4s.dsl.Http4sDsl
 import scalaz.zio.TaskR
 import scalaz.zio.interop.catz._
 
+import com.typesafe.scalalogging.Logger
+
 final case class Service[R <: Repository](rootUri: String) {
   import Service._
 
@@ -21,34 +23,43 @@ final case class Service[R <: Repository](rootUri: String) {
   val dsl: Http4sDsl[TodoTask] = Http4sDsl[TodoTask]
   import dsl._
 
+  val log  = Logger("Service")
+  
+
   def service: HttpRoutes[TodoTask] = {
 
     HttpRoutes.of[TodoTask] {
 
       case GET -> Root =>
+        log.debug ("Get Root called")
         Ok(getAll.map(_.map(TodoItemWithUri(rootUri, _))))
 
       case GET -> Root / LongVar(id) =>
+        log.debug ("Get LongVar called")
         for {
           todo     <- getById(TodoId(id))
           response <- todo.fold(NotFound())(x => Ok(TodoItemWithUri(rootUri, x)))
         } yield response
 
       case req @ POST -> Root =>
+        log.debug ("Post Root called")
         req.decode[TodoItemPostForm] { todoItemForm =>
           create(todoItemForm).map(TodoItemWithUri(rootUri, _)).flatMap(Created(_))
         }
 
       case DELETE -> Root / LongVar(id) =>
+        log.debug ("Del LongVar called")
         for {
           item     <- getById(TodoId(id))
           result   <- item.map(x => delete(x.id)).fold(NotFound())(_.flatMap(Ok(_)))
         } yield result
 
       case DELETE -> Root =>
+        log.debug ("Del Root called")
         deleteAll *> Ok()
 
       case req @ PATCH -> Root / LongVar(id) =>
+        log.debug ("Patch LongVar called")
         req.decode[TodoItemPatchForm] { updateForm =>
           for {
             update   <- update(TodoId(id), updateForm)
