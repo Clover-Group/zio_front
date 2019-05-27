@@ -10,12 +10,8 @@ import org.http4s.dsl.Http4sDsl
 import scalaz.zio.TaskR
 import scalaz.zio.interop.catz._
 
-import com.typesafe.scalalogging.Logger
-
-final case class TodoService[R <: Repository](rootUri: String) {
-  import TodoService._
-
-  private val log  = Logger("MyService")
+final case class Service[R <: Repository](rootUri: String) {
+  import Service._
 
   type TodoTask[A] = TaskR[R, A]
 
@@ -30,35 +26,29 @@ final case class TodoService[R <: Repository](rootUri: String) {
     HttpRoutes.of[TodoTask] {
 
       case GET -> Root =>
-        log.info ("Get Root called")
         Ok(getAll.map(_.map(TodoItemWithUri(rootUri, _))))
 
       case GET -> Root / LongVar(id) =>
-        log.info ("Get LongVar called")
         for {
           todo     <- getById(TodoId(id))
           response <- todo.fold(NotFound())(x => Ok(TodoItemWithUri(rootUri, x)))
         } yield response
 
-      case req @ POST -> Root => 
-        log.info ("Post Root called")
+      case req @ POST -> Root =>
         req.decode[TodoItemPostForm] { todoItemForm =>
-          Created(create(todoItemForm).map(TodoItemWithUri(rootUri, _)))
+          create(todoItemForm).map(TodoItemWithUri(rootUri, _)).flatMap(Created(_))
         }
 
       case DELETE -> Root / LongVar(id) =>
-        log.info ("Delete LongVar called")
         for {
           item     <- getById(TodoId(id))
-          result   <- item.map(x => delete(x.id)).fold(NotFound())(Ok(_))
+          result   <- item.map(x => delete(x.id)).fold(NotFound())(_.flatMap(Ok(_)))
         } yield result
 
       case DELETE -> Root =>
-        log.info ("Delete Root called")
         deleteAll *> Ok()
 
       case req @ PATCH -> Root / LongVar(id) =>
-        log.info ("Patch called")
         req.decode[TodoItemPatchForm] { updateForm =>
           for {
             update   <- update(TodoId(id), updateForm)
@@ -69,7 +59,7 @@ final case class TodoService[R <: Repository](rootUri: String) {
   }
 }
 
-object TodoService {
+object Service {
 
   final case class TodoItemWithUri(
     id: Long,

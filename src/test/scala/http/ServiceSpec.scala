@@ -1,7 +1,7 @@
 package clover.tsp.front.http
 
 import clover.tsp.front._
-import clover.tsp.front.http.TodoService.TodoItemWithUri
+import clover.tsp.front.http.Service.TodoItemWithUri
 import clover.tsp.front.repository.Repository
 import clover.tsp.front.repository.Repository.InMemoryRepository
 import io.circe.generic.auto._
@@ -15,10 +15,10 @@ class TodoServiceSpec extends HTTPSpec {
   import TodoServiceSpec.todoService._
 
   val app = todoService.service.orNotFound
-  
-  describe("Working TodoService") {
 
-    ignore("should create new todo items") {
+  describe("Service") {
+
+    it("should create new todo items") {
       val req     = request(Method.POST, "/").withEntity(TodoItemPostForm("Test"))
       runWithEnv(
         check(
@@ -27,35 +27,7 @@ class TodoServiceSpec extends HTTPSpec {
           Some(TodoItemWithUri(1L, "/1", "Test", false, None))))
     }
 
-    ignore("should delete all todo items") {
-      val setupReq  = request[TodoTask](Method.POST, "/").withEntity(TodoItemPostForm("Test"))
-      val deleteReq = request[TodoTask](Method.DELETE, "/")
-      val req       = request[TodoTask](Method.GET, "/")
-      runWithEnv(
-        check[TodoTask, List[TodoItemWithUri]](
-          app.run(setupReq) *> app.run(setupReq) *> app.run(deleteReq) *> app.run(req),
-          Status.Ok,
-          Some(Nil)))
-    }
-
-    ignore("should update todo items") {
-      val setupReq  = request[TodoTask](Method.POST, "/").withEntity(TodoItemPostForm("Test"))
-      val updateReq = (id: Long) => request[TodoTask](Method.PATCH, s"/$id").withEntity(TodoItemPatchForm(title = Some("Test1")))
-      val req       = request[TodoTask](Method.GET, "/")
-      runWithEnv(
-        check[TodoTask, List[TodoItemWithUri]](
-          app.run(setupReq).flatMap(resp => resp.as[TodoItemWithUri].map(_.id)).flatMap(id => app.run(updateReq(id))) *> app.run(req),
-          Status.Ok,
-          Some(List(
-            TodoItemWithUri(1L, "/1", "Test1", false, None)
-          ))))
-    }
-  
-  }
-
-  describe("Failing TodoService") {
-
-    ignore("should list all todo items") {
+    it("should list all todo items") {
       val setupReq  = request[TodoTask](Method.POST, "/").withEntity(TodoItemPostForm("Test"))
       val req       = request[TodoTask](Method.GET, "/")
       runWithEnv(
@@ -68,7 +40,7 @@ class TodoServiceSpec extends HTTPSpec {
           ))))
     }
 
-    it ("should delete todo items by id") {
+    it("should delete todo items by id") {
       val setupReq  = request[TodoTask](Method.POST, "/").withEntity(TodoItemPostForm("Test"))
       val deleteReq = (id: Long) => request[TodoTask](Method.DELETE, s"/$id")
       val req       = request[TodoTask](Method.GET, "/")
@@ -78,13 +50,36 @@ class TodoServiceSpec extends HTTPSpec {
           Status.Ok,
           Some(Nil)))
     }
-  }
 
+    it("should delete all todo items") {
+      val setupReq  = request[TodoTask](Method.POST, "/").withEntity(TodoItemPostForm("Test"))
+      val deleteReq = request[TodoTask](Method.DELETE, "/")
+      val req       = request[TodoTask](Method.GET, "/")
+      runWithEnv(
+        check[TodoTask, List[TodoItemWithUri]](
+          app.run(setupReq) *> app.run(setupReq) *> app.run(deleteReq) *> app.run(req),
+          Status.Ok,
+          Some(Nil)))
+    }
+
+    it("should update todo items") {
+      val setupReq  = request[TodoTask](Method.POST, "/").withEntity(TodoItemPostForm("Test"))
+      val updateReq = (id: Long) => request[TodoTask](Method.PATCH, s"/$id").withEntity(TodoItemPatchForm(title = Some("Test1")))
+      val req       = request[TodoTask](Method.GET, "/")
+      runWithEnv(
+        check[TodoTask, List[TodoItemWithUri]](
+          app.run(setupReq).flatMap(resp => resp.as[TodoItemWithUri].map(_.id)).flatMap(id => app.run(updateReq(id))) *> app.run(req),
+          Status.Ok,
+          Some(List(
+            TodoItemWithUri(1L, "/1", "Test1", false, None)
+          ))))
+    }
+  }
 }
 
 object TodoServiceSpec extends DefaultRuntime {
 
-  val todoService: TodoService[Repository] = TodoService[Repository]("")
+  val todoService: Service[Repository] = Service[Repository]("")
 
   val mkEnv: UIO[Repository] =
     for {

@@ -2,7 +2,7 @@ package clover.tsp.front
 
 import cats.effect._
 import clover.tsp.front.config._
-import clover.tsp.front.http.TodoService
+import clover.tsp.front.http.Service
 import clover.tsp.front.repository._
 import fs2.Stream.Compiler._
 import org.http4s.implicits._
@@ -31,7 +31,7 @@ object Main extends App {
       transactorR   = mkTransactor(cfg.dbConfig, Platform.executor.asEC, blockingEC)
 
       httpApp       = Router[AppTask](
-                        "/todos" -> TodoService(s"${cfg.appConfig.baseUrl}/todos").service
+                        "/todos" -> Service(s"${cfg.appConfig.baseUrl}/todos").service
                       ).orNotFound
       server        = ZIO.runtime[AppEnvironment].flatMap { implicit rts =>
                         BlazeServerBuilder[AppTask]
