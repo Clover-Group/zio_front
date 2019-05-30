@@ -2,6 +2,8 @@
 val FS2Version        = "1.0.4"
 val Http4sVersion     = "0.20.1"
 val CirceVersion      = "0.12.0-M1"
+val CirceFS2Version   = "0.11.0"
+val JawnFS2Version    = "0.14.2"
 val LogbackVersion    = "1.2.3"
 val ScalaLogVersion   = "3.9.2"
 val PureConfigVersion = "0.11.0"
@@ -28,7 +30,12 @@ lazy val root = (project in file("."))
       "org.http4s"                  %% "http4s-blaze-client"        % Http4sVersion,
       "org.http4s"                  %% "http4s-circe"               % Http4sVersion,
       "org.http4s"                  %% "http4s-dsl"                 % Http4sVersion,
+
       "io.circe"                    %% "circe-generic"              % CirceVersion,
+      "io.circe"                    %% "circe-literal"              % CirceVersion,
+      //"org.http4s"                  %% "jawn-fs2"                   % JawnFS2Version,
+      //"org.typelevel"               %% "jawn-ast"                   % JawnFS2Version,
+
 
       "org.tpolecat"                %% "doobie-core"                % DoobieVersion,
       "org.tpolecat"                %% "doobie-h2"                  % DoobieVersion,
@@ -64,7 +71,7 @@ lazy val root = (project in file("."))
       "-language:higherKinds",
       "-language:existentials",
       "-Ypartial-unification",
-      "-Xfatal-warnings",
+      //"-Xfatal-warnings",
       "-Xlint:-infer-any,_",
       "-Ywarn-value-discard",
       "-Ywarn-numeric-widen",
@@ -75,3 +82,5 @@ lazy val root = (project in file("."))
       "-Ywarn-nullary-unit",
       "-opt:l:inline"
 )
+
+addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.1" cross CrossVersion.full)
