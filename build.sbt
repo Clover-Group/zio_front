@@ -76,7 +76,7 @@ lazy val root = (project in file("."))
       "-Ywarn-value-discard",
       "-Ywarn-numeric-widen",
       "-Ywarn-extra-implicit",
-      "-Ywarn-unused:_",
+      //"-Ywarn-unused:_",
       "-Ywarn-inaccessible",
       "-Ywarn-nullary-override",
       "-Ywarn-nullary-unit",
