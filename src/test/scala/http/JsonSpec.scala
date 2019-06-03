@@ -39,22 +39,39 @@ class JsonSpec extends HTTPSpec {
           Some(TodoItemWithUri(1L, "/1", "Test", false, None))))
     }
 
-    it("work with json") {
-      
-    def hello(name: String): Json = json"""{"hello": $name}"""
+    //it("work with json") {
+    //  
+    //def hello(name: String): Json = json"""{"hello": $name}"""
 
-    val greet  = hello("world")
-    val stream  = Stream.eval(IO{greet})
-    
-    //val req     = request(Method.POST, "/").withEntity(TodoItemPostForm("Test"))
-    val req     = request(Method.POST, "/").withBody(hello("world")).flatMap ( r => 
-      runWithEnv(
-        check(
-          app.run(r),
-          Status.Created,
-          Some(TodoItemWithUri(1L, "/1", "Test", false, None))))
-    )
-    }
+    //val greet  = hello("world")
+    //val stream  = Stream.eval(IO{greet})
+    //
+    ////val req     = request(Method.POST, "/").withEntity(TodoItemPostForm("Test"))
+    ////val req     = request(Method.POST, "/").withBody(hello("world")).map ( r => 
+    ////    r map ( v =>
+    ////      runWithEnv(
+    ////        check(
+    ////          app.run(v),
+    ////          Status.Created,
+    ////          Some(TodoItemWithUri(1L, "/1", "Test", false, None))
+    ////        )
+    ////      )
+    ////    )
+    ////)
+
+    //for {
+    //  req <- request(Method.POST, "/").withBody(hello("world"))
+    //  //a = req.shit()
+    //  res <-  runWithEnv(
+    //            check(
+    //              app.run(req),
+    //              Status.Created,
+    //              Some(TodoItemWithUri(1L, "/1", "Test", false, None))
+    //            )
+    //          )
+    //} yield ()
+
+    //}
   }
 }
 

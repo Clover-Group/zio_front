@@ -15,7 +15,7 @@ import scalaz.zio.blocking.Blocking
 import scalaz.zio.clock.Clock
 import scalaz.zio.console._
 import scalaz.zio.interop.catz._
-import scalaz.zio.scheduler.Scheduler
+//import scalaz.zio.scheduler.Scheduler
 
 object Main extends App {
 
@@ -47,7 +47,7 @@ object Main extends App {
                           new Clock with Console with Blocking with DoobieRepository {
                             override protected def xa: doobie.Transactor[Task] = transactor
 
-                            override val scheduler: Scheduler.Service[Any] = base.scheduler
+                            //override val scheduler: Scheduler.Service[Any] = base.scheduler
                             override val console: Console.Service[Any] = base.console
                             override val clock: Clock.Service[Any] = base.clock
                             override val blocking: Blocking.Service[Any] = base.blocking

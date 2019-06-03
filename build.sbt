@@ -1,13 +1,13 @@
 
 val FS2Version        = "1.0.4"
-val Http4sVersion     = "0.20.1"
-val CirceVersion      = "0.12.0-M1"
+val Http4sVersion     = "0.21.0-SNAPSHOT"
+val CirceVersion      = "0.12.0-M2"
 val CirceFS2Version   = "0.11.0"
 val JawnFS2Version    = "0.14.2"
 val LogbackVersion    = "1.2.3"
 val ScalaLogVersion   = "3.9.2"
 val PureConfigVersion = "0.11.0"
-val ZioVersion        = "1.0-RC4"
+val ZioVersion        = "1.0-RC5"
 val ScalaTestVersion  = "3.0.5"
 val DoobieVersion     = "0.7.0"
 val H2Version         = "1.4.199"
@@ -15,7 +15,7 @@ val FlywayVersion     = "5.2.4"
 
 val KindProjVersion = "0.9.10"
 val BetterMonadicForVersion = "0.3.0"
-//resolvers += Resolver.sonatypeRepo("releases")
+resolvers += Resolver.sonatypeRepo("snapshots")
 
 lazy val root = (project in file("."))
   .settings(
