@@ -15,18 +15,21 @@ import cats.effect._
 import io.circe._
 import io.circe.literal._
 
+//import org.http4s.circe.{jsonEncoder => _}
 import org.http4s.circe._
-import org.http4s.dsl.io._
+import org.http4s.dsl.Http4sDsl
 
 import scalaz.zio.{ZIO, UIO, Ref, DefaultRuntime}
 import scalaz.zio.interop.catz._
-
 
 class JsonSpec extends HTTPSpec {
   import JsonSpec._
   import JsonSpec.todoService._
 
   val app = todoService.service.orNotFound
+
+  val dsl: Http4sDsl[TodoTask] = Http4sDsl[TodoTask]
+  import dsl._
 
   describe("Simple Service") {
 
@@ -48,7 +51,7 @@ class JsonSpec extends HTTPSpec {
     
     //val req     = request(Method.POST, "/").withEntity(TodoItemPostForm("Test"))
     for {
-      req <- request[TodoTask](Method.POST, "/").withBody(Ok(hello("world")))
+      req <- request[TodoTask](Method.POST, "/").withEntity(Ok(hello("world")))
       //a = req.shit()
       res <-  runWithEnv(
                 check(
