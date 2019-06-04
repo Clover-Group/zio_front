@@ -10,9 +10,9 @@ import org.http4s.{Status, _}
 import scalaz.zio._
 import scalaz.zio.interop.catz._
 
-class TodoServiceSpec extends HTTPSpec {
-  import TodoServiceSpec._
-  import TodoServiceSpec.todoService._
+class SimpleSpec extends HTTPSpec {
+  import SimpleSpec._
+  import SimpleSpec.todoService._
 
   val app = todoService.service.orNotFound
 
@@ -77,7 +77,7 @@ class TodoServiceSpec extends HTTPSpec {
   }
 }
 
-object TodoServiceSpec extends DefaultRuntime {
+object SimpleSpec extends DefaultRuntime {
 
   val todoService: Service[Repository] = Service[Repository]("")
 
