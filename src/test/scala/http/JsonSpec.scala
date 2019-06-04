@@ -4,29 +4,30 @@ import clover.tsp.front._
 import clover.tsp.front.http.Service.TodoItemWithUri
 import clover.tsp.front.repository.Repository
 import clover.tsp.front.repository.Repository.InMemoryRepository
-import io.circe.generic.auto._
-import org.http4s.implicits._
-import org.http4s.{Status, _}
 
-import fs2.Stream
-//import java.nio.file.Paths
-
-import cats.effect._
-import io.circe._
+//import cats.effect._
+//import io.circe._
 import io.circe.literal._
+import io.circe.generic.auto._
+//import io.circe.syntax._
+//import io.circe.{Encoder, Json}
 
-//import org.http4s.circe.{jsonEncoder => _}
-import org.http4s.circe._
-import org.http4s.dsl.Http4sDsl
+import org.http4s._
+//import org.http4s.circe._
+//import org.http4s.dsl.io._
+import org.http4s.implicits._
 
 import scalaz.zio.{ZIO, UIO, Ref, DefaultRuntime}
 import scalaz.zio.interop.catz._
+
+import org.http4s.dsl.Http4sDsl
 
 class JsonSpec extends HTTPSpec {
   import JsonSpec._
   import JsonSpec.todoService._
 
   val app = todoService.service.orNotFound
+
 
   val dsl: Http4sDsl[TodoTask] = Http4sDsl[TodoTask]
   import dsl._
@@ -43,24 +44,21 @@ class JsonSpec extends HTTPSpec {
     }
 
     it("work with json") {
+    //implicit def circeJsonEncoder[A](implicit encoder: Encoder[A]): EntityEncoder[TodoTask, A] = jsonEncoderOf[TodoTask, A]
       
-    def hello(name: String): Json = json"""{"hello": $name}"""
-
-    val greet  = hello("world")
-    val stream  = Stream.eval(IO{greet})
+    val body = json"""{"hello":"world"}"""
     
-    //val req     = request(Method.POST, "/").withEntity(TodoItemPostForm("Test"))
-    for {
-      req <- request[TodoTask](Method.POST, "/").withEntity(Ok(hello("world")))
-      //a = req.shit()
-      res <-  runWithEnv(
-                check(
-                  app.run(req),
-                  Status.Ok,
-                  Some(TodoItemWithUri(1L, "/1", "Test", false, None))
-                )
-              )
-    } yield ()
+    //for {
+    //  req <- request[TodoTask](Method.POST, "/").withBody(body)
+    //  //a = req.shit()
+    //  res <-  runWithEnv(
+    //            check(
+    //              app.run(req),
+    //              Status.Ok,
+    //              Some(TodoItemWithUri(1L, "/1", "Test", false, None))
+    //            )
+    //          )
+    //} yield ()
 
     }
   }

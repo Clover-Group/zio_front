@@ -23,7 +23,7 @@ lazy val root = (project in file("."))
     name := "front",
     version := "0.1.0",
     scalaVersion := "2.12.8",
-    maxErrors := 5,
+    maxErrors := 3,
     libraryDependencies ++= Seq(
       "co.fs2"                      %% "fs2-core"                   % FS2Version,
       "org.http4s"                  %% "http4s-blaze-server"        % Http4sVersion,
