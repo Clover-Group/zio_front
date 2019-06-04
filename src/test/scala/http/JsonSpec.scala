@@ -48,7 +48,7 @@ class JsonSpec extends HTTPSpec {
     
     //val req     = request(Method.POST, "/").withEntity(TodoItemPostForm("Test"))
     for {
-      req <- request(Method.POST, "/").withBody(Ok(hello("world")))
+      req <- request[TodoTask](Method.POST, "/").withBody(Ok(hello("world")))
       //a = req.shit()
       res <-  runWithEnv(
                 check(
