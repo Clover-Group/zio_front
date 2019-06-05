@@ -11,4 +11,4 @@ The application interface to business logic is implemented with [ZIO queue](http
 
 This project is a high quality design, built upon many successful projects. It became an official member of [ZIO Ecosystem](https://zio.dev/docs/resources/resources)
 
-Project datapath block diagram
+Project datapath block diagram ![datapath](doc/arch.png)
