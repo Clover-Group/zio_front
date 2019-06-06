@@ -4,7 +4,7 @@ import clover.tsp.front.repository.DoobieRepository.SQL
 import doobie._
 import doobie.implicits._
 import scalaz.zio.interop.catz._
-import scalaz.zio.{Task, ZIO}
+import scalaz.zio.{ Task, ZIO }
 import cats.implicits._
 import doobie.free.connection
 
@@ -16,8 +16,7 @@ trait DoobieRepository extends Repository {
     new Repository.Service[Any] {
 
       override def getAll(): ZIO[Any, Nothing, List[TodoItem]] =
-        SQL
-          .getAll
+        SQL.getAll
           .to[List]
           .transact(xa)
           .orDie
@@ -38,9 +37,7 @@ trait DoobieRepository extends Repository {
           .orDie
 
       override def deleteAll: ZIO[Any, Nothing, Unit] =
-        SQL
-          .deleteAll
-          .run
+        SQL.deleteAll.run
           .transact(xa)
           .unit
           .orDie
@@ -55,12 +52,12 @@ trait DoobieRepository extends Repository {
 
       override def update(id: TodoId, todoItemForm: TodoItemPatchForm): ZIO[Any, Nothing, Option[TodoItem]] =
         (for {
-          oldItem    <- SQL.get(id).option
-          newItem     = oldItem.map(_.update(todoItemForm))
-          _          <- newItem.fold(connection.unit)(item => SQL.update(item).run.void)
+          oldItem <- SQL.get(id).option
+          newItem = oldItem.map(_.update(todoItemForm))
+          _       <- newItem.fold(connection.unit)(item => SQL.update(item).run.void)
         } yield newItem)
-        .transact(xa)
-        .orDie
+          .transact(xa)
+          .orDie
 
     }
 }
@@ -69,7 +66,7 @@ object DoobieRepository {
 
   object SQL {
 
-    def create(todo: TodoPayload): Update0 =sql"""
+    def create(todo: TodoPayload): Update0 = sql"""
       INSERT INTO TODOS (TITLE, COMPLETED, ORDERING)
       VALUES (${todo.title}, ${todo.completed}, ${todo.order})
       """.update
@@ -82,11 +79,11 @@ object DoobieRepository {
       SELECT * FROM TODOS
       """.query[TodoItem]
 
-    def delete(id: TodoId): Update0 =sql"""
+    def delete(id: TodoId): Update0 = sql"""
       DELETE from TODOS WHERE ID = ${id.value}
       """.update
 
-    val deleteAll: Update0 =sql"""
+    val deleteAll: Update0 = sql"""
       DELETE from TODOS
       """.update
 
