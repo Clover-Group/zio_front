@@ -4,8 +4,8 @@ import cats.effect._
 import clover.tsp.front.config._
 import clover.tsp.front.http.Service
 import clover.tsp.front.repository._
-import fs2.Stream.Compiler._
-import org.http4s.implicits._
+//import fs2.Stream.Compiler._
+//import org.http4s.implicits._
 import org.http4s.server.Router
 import org.http4s.server.blaze.BlazeServerBuilder
 import org.http4s.server.middleware.CORS
@@ -16,6 +16,8 @@ import scalaz.zio.clock.Clock
 import scalaz.zio.console._
 import scalaz.zio.interop.catz._
 //import scalaz.zio.scheduler.Scheduler
+
+import cats.effect.Blocker
 
 object Main extends App {
 
@@ -28,6 +30,7 @@ object Main extends App {
       _   <- initDb(cfg.dbConfig)
 
       blockingEC  <- ZIO.environment[Blocking].flatMap(_.blocking.blockingExecutor).map(_.asEC)
+      //blockingEC  <- ZIO.environment[Blocker]
       transactorR = mkTransactor(cfg.dbConfig, Platform.executor.asEC, blockingEC)
 
       httpApp = Router[AppTask](

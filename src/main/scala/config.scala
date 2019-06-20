@@ -7,6 +7,7 @@ import scalaz.zio._
 import scalaz.zio.interop.catz._
 
 import scala.concurrent.ExecutionContext
+import cats.effect.Blocker
 
 object config {
 
@@ -40,7 +41,7 @@ object config {
   def mkTransactor(
     cfg: DBConfig,
     connectEC: ExecutionContext,
-    transactEC: ExecutionContext
+    transactEC: Blocker
   ): Managed[Throwable, Transactor[Task]] = {
     val xa =
       HikariTransactor.newHikariTransactor[Task](cfg.driver, cfg.url, cfg.user, cfg.password, connectEC, transactEC)
