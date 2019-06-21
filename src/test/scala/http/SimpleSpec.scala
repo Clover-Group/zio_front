@@ -7,8 +7,8 @@ import clover.tsp.front.repository.Repository.InMemoryRepository
 import io.circe.generic.auto._
 import org.http4s.implicits._
 import org.http4s.{ Status, _ }
-import scalaz.zio._
-import scalaz.zio.interop.catz._
+import zio._
+import zio.interop.catz._
 
 class SimpleSpec extends HTTPSpec {
   import SimpleSpec._

@@ -12,8 +12,13 @@ import org.http4s._
 import org.http4s.implicits._
 import org.http4s.dsl.Http4sDsl
 
+<<<<<<< HEAD
 import scalaz.zio.{ZIO, UIO, Ref, DefaultRuntime}
 import scalaz.zio.interop.catz._
+=======
+import zio.{ DefaultRuntime, Ref, UIO, ZIO }
+import zio.interop.catz._
+>>>>>>> dev
 
 
 class JsonSpec extends HTTPSpec {

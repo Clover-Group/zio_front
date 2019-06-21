@@ -7,8 +7,8 @@ import io.circe.{ Decoder, Encoder }
 import org.http4s._
 import org.http4s.circe._
 import org.http4s.dsl.Http4sDsl
-import scalaz.zio.TaskR
-import scalaz.zio.interop.catz._
+import zio.TaskR
+import zio.interop.catz._
 
 import com.typesafe.scalalogging.Logger
 

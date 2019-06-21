@@ -3,8 +3,8 @@ import clover.tsp.front._
 import clover.tsp.front.repository.DoobieRepository.SQL
 import doobie._
 import doobie.implicits._
-import scalaz.zio.interop.catz._
-import scalaz.zio.{ Task, ZIO }
+import zio.interop.catz._
+import zio.{ Task, ZIO }
 import cats.implicits._
 import doobie.free.connection
 
