@@ -1,11 +1,11 @@
-//val FS2Version        = "1.1.0-M1"
+val FS2Version        = "1.1.0-M1"
 val Http4sVersion     = "0.21.0-SNAPSHOT"
 val CirceVersion      = "0.12.0-M3"
 //val JawnFS2Version    = "0.14.2"
 val LogbackVersion    = "1.2.3"
 val ScalaLogVersion   = "3.9.2"
 val PureConfigVersion = "0.11.1"
-val ZioVersion        = "1.0-RC5"
+val ZioVersion        = "1.0.0-RC8-6"
 val ScalaTestVersion  = "3.0.8"
 val DoobieVersion     = "0.8.0-M1"
 val H2Version         = "1.4.199"
@@ -24,7 +24,7 @@ lazy val root = (project in file("."))
     maxErrors := 3,
     updateOptions := updateOptions.value.withLatestSnapshots(false),
     libraryDependencies ++= Seq(
-      //"co.fs2"     %% "fs2-core"            % FS2Version,
+      "co.fs2"     %% "fs2-core"            % FS2Version,
       "org.http4s" %% "http4s-blaze-server" % Http4sVersion,
       "org.http4s" %% "http4s-blaze-client" % Http4sVersion,
       "org.http4s" %% "http4s-circe"        % Http4sVersion,
@@ -44,8 +44,8 @@ lazy val root = (project in file("."))
       "org.scalatest"              %% "scalatest"               % ScalaTestVersion,
       "com.github.pureconfig"      %% "pureconfig"              % PureConfigVersion,
       "com.github.pureconfig"      %% "pureconfig-cats-effect"  % PureConfigVersion,
-      "org.scalaz"                 %% "scalaz-zio"              % ZioVersion,
-      "org.scalaz"                 %% "scalaz-zio-interop-cats" % ZioVersion
+      "dev.zio"                    %% "zio"                     % ZioVersion,
+      "dev.zio"                    %% "zio-interop-cats"        % ZioVersion,
       //compilerPlugin("org.spire-math" %% "kind-projector"           % KindProjVersion),
       //compilerPlugin("com.olegpy"     %% "better-monadic-for"       % BetterMonadicForVersion)
     )

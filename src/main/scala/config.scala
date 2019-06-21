@@ -3,8 +3,8 @@ package clover.tsp.front
 import doobie.hikari._
 import doobie.util.transactor.Transactor
 import org.flywaydb.core.Flyway
-import scalaz.zio._
-import scalaz.zio.interop.catz._
+import zio._
+import zio.interop.catz._
 
 import scala.concurrent.ExecutionContext
 import cats.effect.Blocker

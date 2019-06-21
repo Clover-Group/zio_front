@@ -1,7 +1,7 @@
 package clover.tsp.front.repository
 
 import clover.tsp.front.{ TodoId, TodoItem, TodoItemPatchForm, TodoItemPostForm }
-import scalaz.zio._
+import zio._
 
 trait Repository extends Serializable {
 

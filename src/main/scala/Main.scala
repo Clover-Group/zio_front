@@ -10,12 +10,11 @@ import org.http4s.server.Router
 import org.http4s.server.blaze.BlazeServerBuilder
 import org.http4s.server.middleware.CORS
 import pureconfig.generic.auto._
-import scalaz.zio._
-import scalaz.zio.blocking.Blocking
-import scalaz.zio.clock.Clock
-import scalaz.zio.console._
-import scalaz.zio.interop.catz._
-//import scalaz.zio.scheduler.Scheduler
+import zio._
+import zio.blocking.Blocking
+import zio.clock.Clock
+import zio.console._
+import zio.interop.catz._
 
 import cats.effect.Blocker
 
