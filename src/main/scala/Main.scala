@@ -4,19 +4,17 @@ import cats.effect._
 import clover.tsp.front.config._
 import clover.tsp.front.http.Service
 import clover.tsp.front.repository._
-//import fs2.Stream.Compiler._
-//import org.http4s.implicits._
+import org.http4s.implicits._
 import org.http4s.server.Router
 import org.http4s.server.blaze.BlazeServerBuilder
 import org.http4s.server.middleware.CORS
 import pureconfig.generic.auto._
+
 import zio._
 import zio.blocking.Blocking
 import zio.clock.Clock
 import zio.console._
 import zio.interop.catz._
-
-import cats.effect.Blocker
 
 object Main extends App {
 
@@ -28,9 +26,9 @@ object Main extends App {
       cfg <- ZIO.fromEither(pureconfig.loadConfig[Config])
       _   <- initDb(cfg.dbConfig)
 
-      blockingEC  <- ZIO.environment[Blocking].flatMap(_.blocking.blockingExecutor).map(_.asEC)
-      //blockingEC  <- ZIO.environment[Blocker]
-      transactorR = mkTransactor(cfg.dbConfig, Platform.executor.asEC, blockingEC)
+      blockingEC  <- ZIO.environment[Blocking].flatMap(_.blocking.blockingExecutor).map(_.asEC)      
+      block = Blocker.liftExecutionContext(blockingEC)
+      transactorR = mkTransactor(cfg.dbConfig, Platform.executor.asEC, block)
 
       httpApp = Router[AppTask](
         "/todos" -> Service(s"${cfg.appConfig.baseUrl}/todos").service
