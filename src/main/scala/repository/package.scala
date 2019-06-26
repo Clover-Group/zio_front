@@ -1,6 +1,6 @@
 package clover.tsp.front
 
-import zio.{ZIO}
+import zio.{ ZIO }
 
 package object repository extends Repository.Service[Repository] {
 

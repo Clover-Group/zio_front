@@ -46,6 +46,7 @@ object Repository extends Serializable {
         newId <- counter.update(_ + 1) map TodoId
         todo  = todoItemForm.asTodoItem(newId)
         _     <- ref.update(store => store + (newId -> todo))
+        v     <- ref.get
       } yield todo
 
     override def update(id: TodoId, todoItemForm: TodoItemPatchForm): ZIO[Any, Nothing, Option[TodoItem]] =

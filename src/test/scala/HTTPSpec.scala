@@ -18,12 +18,20 @@ class HTTPSpec extends UnitSpec {
     implicit
     F: Sync[F],
     ev: EntityDecoder[F, A]
-  ): F[Unit] =
+  ): F[Unit] = {
+    println(expectedBody)
+
     for {
       actual <- actual
+      _      <- F.delay(assert(actual.status == expectedStatus, s"Status was ${actual.status} instead of $expectedStatus."))
+      v      <- actual.as[A]
       _ <- expectedBody.fold[F[Assertion]](actual.body.compile.toVector.map(s => assert(s.isEmpty)))(
-            expected => actual.as[A].map(x => assert(x === expected, s"Body was $x instead of $expected."))
+            expected => {
+
+              actual.as[A].map(x => assert(x === expected, s"Body was $x instead of $expected."))
+            }
           )
-      _ <- F.delay(assert(actual.status == expectedStatus, s"Status was ${actual.status} instead of $expectedStatus."))
+
     } yield ()
+  }
 }

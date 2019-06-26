@@ -26,8 +26,8 @@ object Main extends App {
       cfg <- ZIO.fromEither(pureconfig.loadConfig[Config])
       _   <- initDb(cfg.dbConfig)
 
-      blockingEC  <- ZIO.environment[Blocking].flatMap(_.blocking.blockingExecutor).map(_.asEC)      
-      block = Blocker.liftExecutionContext(blockingEC)
+      blockingEC  <- ZIO.environment[Blocking].flatMap(_.blocking.blockingExecutor).map(_.asEC)
+      block       = Blocker.liftExecutionContext(blockingEC)
       transactorR = mkTransactor(cfg.dbConfig, Platform.executor.asEC, block)
 
       httpApp = Router[AppTask](

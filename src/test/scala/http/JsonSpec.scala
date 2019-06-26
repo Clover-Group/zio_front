@@ -12,16 +12,11 @@ import org.http4s._
 import org.http4s.implicits._
 import org.http4s.dsl.Http4sDsl
 
-<<<<<<< HEAD
-import scalaz.zio.{ZIO, UIO, Ref, DefaultRuntime}
-import scalaz.zio.interop.catz._
-=======
 import zio.{ DefaultRuntime, Ref, UIO, ZIO }
 import zio.interop.catz._
->>>>>>> dev
-
 
 class JsonSpec extends HTTPSpec {
+
   import JsonSpec._
   import JsonSpec.todoService._
 
@@ -33,34 +28,34 @@ class JsonSpec extends HTTPSpec {
   describe("Simple Service") {
 
     it("should create new todo items") {
-      val req     = request(Method.POST, "/").withEntity(TodoItemPostForm("Test"))
-      runWithEnv(
-        check(
-          app.run(req),
-          Status.Created,
-          Some(TodoItemWithUri(1L, "/1", "Test", false, None))))
+      val req = request(Method.POST, "/").withEntity(TodoItemPostForm("Test"))
+      runWithEnv(check(app.run(req), Status.Created, Some(TodoItemWithUri(1L, "/1", "Test", false, None))))
     }
 
     it("should parse json") {
-      
-    val body = json"""
+      val req0 = request(Method.POST, "/").withEntity(TodoItemPostForm("Test"))
+
+      val body =
+        json"""
       {
-        "id"        : 33        ,
-        "url"       :"/testUrl" ,
-        "title"     :"One"      ,
-        "completed" : false     ,
-        "order"     : "None"
+        "title"     :"One",
+        "completed" : true,
+        "order"     : null
       }"""
 
-    val req = request[TodoTask](Method.POST, "/").withEntity(body)
+      val req = request[TodoTask](Method.PATCH, "/1").withEntity(body)
 
-    runWithEnv(
-      check(
-        app.run(req),
-        Status.Ok,
-        Some(Nil))
-        //Some(TodoItemWithUri(1L, "/1", "Test", false, None))
-    )
+      runWithEnv(for {
+        t0 <- check(app.run(req0), Status.Created, Some(TodoItemWithUri(1L, "/1", "Test", false, None)))
+        t1 <- check(
+               app.run(req),
+               Status.Ok,
+               //Some(Nil))
+               Some(TodoItemWithUri(1L, "/1", "One", true, None))
+             )
+
+      } yield {})
+
     }
   }
 }
@@ -71,12 +66,12 @@ object JsonSpec extends DefaultRuntime {
 
   val mkEnv: UIO[Repository] =
     for {
-      store    <- Ref.make(Map[TodoId, TodoItem]())
-      counter  <- Ref.make(0L)
-      repo      = InMemoryRepository(store, counter)
-      env       = new Repository {
-                    override val todoRepository: Repository.Service[Any] = repo
-                  }
+      store   <- Ref.make(Map[TodoId, TodoItem]())
+      counter <- Ref.make(0L)
+      repo    = InMemoryRepository(store, counter)
+      env = new Repository {
+        override val todoRepository: Repository.Service[Any] = repo
+      }
     } yield env
 
   def runWithEnv[E, A](task: ZIO[Repository, E, A]): A =
