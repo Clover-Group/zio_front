@@ -54,7 +54,7 @@ class JsonSpec extends HTTPSpec {
                Some(TodoItemWithUri(1L, "/1", "One", true, None))
              )
 
-      } yield {})
+      } yield ())
 
     }
   }
