@@ -2,7 +2,7 @@ package clover.tsp.front
 
 import cats.effect._
 import clover.tsp.front.config._
-import clover.tsp.front.http.Service
+import clover.tsp.front.http.{ DBService, Service }
 import clover.tsp.front.repository._
 import org.http4s.implicits._
 import org.http4s.server.Router
@@ -31,7 +31,8 @@ object Main extends App {
       transactorR = mkTransactor(cfg.dbConfig, Platform.executor.asEC, block)
 
       httpApp = Router[AppTask](
-        "/todos" -> Service(s"${cfg.appConfig.baseUrl}/todos").service
+        "/todos"   -> Service(s"${cfg.appConfig.baseUrl}/todos").service,
+        "/db_info" -> DBService(s"${cfg.appConfig.baseUrl}/db_info").service
       ).orNotFound
       server = ZIO.runtime[AppEnvironment].flatMap { implicit rts =>
         BlazeServerBuilder[AppTask]
@@ -47,7 +48,6 @@ object Main extends App {
                     new Clock with Console with Blocking with DoobieRepository {
                       override protected def xa: doobie.Transactor[Task] = transactor
 
-                      //override val scheduler: Scheduler.Service[Any] = base.scheduler
                       override val console: Console.Service[Any]   = base.console
                       override val clock: Clock.Service[Any]       = base.clock
                       override val blocking: Blocking.Service[Any] = base.blocking

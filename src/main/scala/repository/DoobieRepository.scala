@@ -12,10 +12,12 @@ trait DoobieRepository extends Repository {
 
   protected def xa: Transactor[Task]
 
+  override val dbInfoRepository: Repository.SimpleService[Any] = null
+
   override val todoRepository: Repository.Service[Any] =
     new Repository.Service[Any] {
 
-      override def getAll(): ZIO[Any, Nothing, List[TodoItem]] =
+      override def getAll: ZIO[Any, Nothing, List[TodoItem]] =
         SQL.getAll
           .to[List]
           .transact(xa)
