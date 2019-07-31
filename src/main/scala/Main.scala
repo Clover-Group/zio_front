@@ -31,8 +31,7 @@ object Main extends App {
       transactorR = mkTransactor(cfg.dbConfig, Platform.executor.asEC, block)
 
       httpApp = Router[AppTask](
-        "/todos"   -> Service(s"${cfg.appConfig.baseUrl}/todos").service,
-        "/db_info" -> DBService(s"${cfg.appConfig.baseUrl}/db_info").service
+        "/tsp_processing" -> DBService(s"${cfg.appConfig.baseUrl}/db_info").service
       ).orNotFound
       server = ZIO.runtime[AppEnvironment].flatMap { implicit rts =>
         BlazeServerBuilder[AppTask]
