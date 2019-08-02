@@ -6,31 +6,31 @@ final case class DBItem(data: String)
 
 @JsonCodec
 final case class RowSchema(
- toTsField: String,
- fromTsField: String,
- contextField: String,
- sourceIdField: String,
- patternIdField: String,
- forwardedFields: List[String],
- processingTsField: String,
- appIdFieldVal: List[String]
+  toTsField: String,
+  fromTsField: String,
+  contextField: String,
+  sourceIdField: String,
+  patternIdField: String,
+  forwardedFields: List[String],
+  processingTsField: String,
+  appIdFieldVal: List[String]
 )
 
 @JsonCodec
 final case class Rule(
- id: String,
- payload: Map[String, String],
- sourceCode: String,
- forwardedFields: List[String]
+  id: String,
+  payload: Map[String, String],
+  sourceCode: String,
+  forwardedFields: List[String]
 )
 
-trait Sink{
+trait Sink {
   val abstractParallelism: Int
   val abstractBatchInterval: Int
   val abstractRowSchema: RowSchema
 }
 
-trait Source{
+trait Source {
   val abstractSourceId: Int
   val abstractParallelism: Int
   val abstractDateTimeField: String
