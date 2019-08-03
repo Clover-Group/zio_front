@@ -1,6 +1,12 @@
+# Scala
 .bloop
 .metals
 .idea
 target
 project/target/
 project/project
+
+# Python
+*_env
+__pycache__
+*.pyc
