@@ -1,0 +1,92 @@
+{
+  "sink":{
+    "driverName": "kafka",
+    "topic": "test_topic_sink",
+    "rowSchema": {
+      "toTsField": "to_ts",
+      "fromTsField": "from_ts",
+      "contextField": "context",
+      "appIdFieldVal":[
+        "type",
+        "1"
+      ],
+      "sourceIdField": "series_storage",
+      "patternIdField": "entity_id",
+      "forwardedFields": [
+        "loco_num",
+        "Section",
+        "upload_id"
+      ],
+      "processingTsField": "processing_ts"
+    },
+    "parallelism": 1,
+    "batchInterval": 5000
+  },
+  "uuid": "6bebf095-2c7c-4c91-b2bb-45a270f3a331_1",
+  "source":{
+    "sourceId":2,
+    "driverName":"kafka",
+    "columns":[
+      "ts",
+      "loco_num",
+      "Section",
+      "upload_id",
+      "TExGasCylinder1Left",
+      "TExGasCylinder1Right",
+      "TExGasCylinder2Left",
+      "TExGasCylinder2Right",
+      "TExGasCylinder3Left",
+      "TExGasCylinder3Right",
+      "TExGasCylinder4Left",
+      "TExGasCylinder4Right",
+      "TExGasCylinder5Left",
+      "TExGasCylinder5Right",
+      "TExGasCylinder6Left",
+      "TExGasCylinder6Right",
+      "TExGasCylinder7Left",
+      "TExGasCylinder7Right",
+      "TExGasCylinder8Left",
+      "TExGasCylinder8Right",
+      "PowerPolling",
+      "PosKM"
+    ],
+    "topic":"test_topic_source",
+    "parallelism":1,
+    "datetimeField":"ts",
+    "eventsMaxGapMs":60000,
+    "partitionFields":[
+      "loco_num",
+      "Section",
+      "upload_id"
+    ],
+    "defaultEventsGapMs":2000,
+    "numParallelSources":1,
+    "patternsParallelism":1
+  },
+  "patterns":[
+    {
+      "id":"2536",
+      "payload":{
+        "_params_":"Cilinder_Side Number_Cilinder",
+        "Cilinder_Side":"Left",
+        "Number_Cilinder":"1"
+      },
+      "sourceCode":"TExGasCylinder1Left > 110 and avgOf(TExGasCylinder1Left, TExGasCylinder1Right, TExGasCylinder2Left, TExGasCylinder2Right, TExGasCylinder3Left, TExGasCylinder3Right, TExGasCylinder4Left, TExGasCylinder4Right, TExGasCylinder5Left, TExGasCylinder5Right, TExGasCylinder6Left, TExGasCylinder6Right, TExGasCylinder7Left, TExGasCylinder7Right, TExGasCylinder8Left, TExGasCylinder8Right) - TExGasCylinder1Left > 100 and PowerPolling > 100 and PosKM > 4 for  300 sec ",
+      "forwardedFields":[
+
+      ]
+    },
+    {
+      "id":"2536",
+      "payload":{
+        "_params_":"Cilinder_Side Number_Cilinder",
+        "Cilinder_Side":"Left",
+        "Number_Cilinder":"2"
+      },
+      "sourceCode":"TExGasCylinder2Left > 110 and avgOf(TExGasCylinder1Left, TExGasCylinder1Right, TExGasCylinder2Left, TExGasCylinder2Right, TExGasCylinder3Left, TExGasCylinder3Right, TExGasCylinder4Left, TExGasCylinder4Right, TExGasCylinder5Left, TExGasCylinder5Right, TExGasCylinder6Left, TExGasCylinder6Right, TExGasCylinder7Left, TExGasCylinder7Right, TExGasCylinder8Left, TExGasCylinder8Right) - TExGasCylinder2Left > 100 and PowerPolling > 100 and PosKM > 4 for  300 sec ",
+      "forwardedFields":[
+
+      ]
+    }
+  ]
+}

@@ -2,11 +2,12 @@ package clover.tsp.front.specs2
 
 import java.nio.file.Paths
 
+import clover.tsp.front.domain.{ DBItem }
 import clover.tsp.front.http.DBService
 import io.circe.literal._
 import io.circe.parser._
 import org.specs2.specification.core.SpecStructure
-import clover.tsp.front.{ DBItem, HTTPSpec2 }
+import clover.tsp.front.{ HTTPSpec2 }
 import clover.tsp.front.repository.Repository
 import clover.tsp.front.repository.Repository.DBInfoRepository
 import org.http4s.implicits._
@@ -23,15 +24,16 @@ import java.nio.charset.StandardCharsets
 import io.circe.Json
 import org.http4s.{ Method, Status }
 
-class TSPOtherSpec extends HTTPSpec2 {
+class TSPHttpTasksSpec extends HTTPSpec2 {
   import TSPOtherSpec._
   import TSPOtherSpec.dbInfoService._
 
   val app                        = dbInfoService.service.orNotFound
   val dsl: Http4sDsl[TSPTaskDTO] = Http4sDsl[TSPTaskDTO]
 
-  val currentPath = Paths.get(".").toAbsolutePath
-  val filePath    = s"$currentPath/assets/json/req0.txt"
+  val currentPath     = Paths.get(".").toAbsolutePath
+  val filePath        = s"$currentPath/assets/json/req0.txt"
+  val pathToKafkaJson = s"$currentPath/assets/json/loco/kafka.json"
 
   override def is: SpecStructure =
     s2"""
@@ -39,6 +41,7 @@ class TSPOtherSpec extends HTTPSpec2 {
           retrieve info about DB                 $t1
           status should be Ok                    $t2
           retrieve info about DB with status OK  $t3
+          should invoke kafka service            $t4
       """
 
   def closeStream(is: FileInputStream) = UIO(is.close())
@@ -93,6 +96,26 @@ class TSPOtherSpec extends HTTPSpec2 {
     runWithEnv(
       for {
         file <- Task(new File(filePath))
+        len  = file.length
+        jsonData <- Task(new FileInputStream(file))
+                     .bracket(closeStream)(convertBytes(_, len))
+                     .mapError(_ => new Throwable("Error when working with file"))
+        finalJson = jsonData
+        parseResult <- ZIO
+                        .effect(parse(finalJson).getOrElse(Json.Null))
+                        .mapError(_ => new Throwable("JSON parse failed"))
+        req          = request[TSPTaskDTO](Method.POST, "/").withEntity(json"""$parseResult""")
+        res          <- ZIO.effect(app.run(req)).mapError(_ => new Throwable("HTTP effect failed"))
+        response     <- res
+        responseBody <- response.as[DBItem]
+        status       = response.status
+      } yield (responseBody, status).equals((DBItem("some data"), Status.Ok))
+    )
+
+  def t4 =
+    runWithEnv(
+      for {
+        file <- Task(new File(pathToKafkaJson))
         len  = file.length
         jsonData <- Task(new FileInputStream(file))
                      .bracket(closeStream)(convertBytes(_, len))

@@ -3,6 +3,18 @@ package clover.tsp.front.domain
 import io.circe.generic.JsonCodec
 
 @JsonCodec
+final case class CHRowSchema(
+  toTsField: String,
+  fromTsField: String,
+  contextField: String,
+  sourceIdField: String,
+  patternIdField: String,
+  forwardedFields: List[String],
+  processingTsField: String,
+  appIdFieldVal: List[String]
+)
+
+@JsonCodec
 final case class CHSink(
   jdbcUrl: String,
   password: String,
@@ -11,21 +23,17 @@ final case class CHSink(
   driverName: String,
   parallelism: Int,
   batchInterval: Int,
-  rowSchema: RowSchema
-) extends Sink {
-  override val abstractParallelism: Int     = parallelism
-  override val abstractBatchInterval: Int   = batchInterval
-  override val abstractRowSchema: RowSchema = rowSchema
-}
+  rowSchema: CHRowSchema
+)
 
 @JsonCodec
 final case class CHSource(
   query: String,
   jdbcUrl: String,
   password: String,
+  sourceId: Int,
   userName: String,
   driverName: String,
-  sourceId: Int,
   parallelism: Int,
   dateTimeField: String,
   eventsMaxGapMs: Int,
@@ -33,16 +41,7 @@ final case class CHSource(
   defaultEventsGapMs: Int,
   numParallelSources: Int,
   patternsParallelism: Int
-) extends Source {
-  override val abstractSourceId: Int                 = sourceId
-  override val abstractParallelism: Int              = parallelism
-  override val abstractDateTimeField: String         = dateTimeField
-  override val abstractEventsMaxGapMs: Int           = eventsMaxGapMs
-  override val abstractPartitionFields: List[String] = partitionFields
-  override val abstractDefaultEventsGapMs: Int       = defaultEventsGapMs
-  override val abstractNumParallelSources: Int       = numParallelSources
-  override val abstractPatternsParallelism: Int      = patternsParallelism
-}
+)
 
 @JsonCodec
 final case class CHTSPTask(
@@ -50,4 +49,4 @@ final case class CHTSPTask(
   uuid: String,
   patterns: List[Rule],
   source: CHSource
-)
+) extends TSPTask

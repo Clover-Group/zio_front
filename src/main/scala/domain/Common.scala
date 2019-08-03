@@ -40,3 +40,5 @@ trait Source {
   val abstractNumParallelSources: Int
   val abstractPatternsParallelism: Int
 }
+
+trait TSPTask
