@@ -2,7 +2,9 @@ package clover.tsp.front.http
 
 import java.nio.file.Paths
 
-import clover.tsp.front.{ DBItem, HTTPSpec }
+import clover.tsp.front.domain.{ DBItem }
+
+import clover.tsp.front.{ HTTPSpec }
 import clover.tsp.front.repository.Repository
 import clover.tsp.front.repository.Repository.DBInfoRepository
 import io.circe.literal._

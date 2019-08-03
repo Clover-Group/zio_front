@@ -1,5 +1,6 @@
 package clover.tsp.front.repository
 
+import clover.tsp.front.domain.{ DBItem, TSPTask }
 import clover.tsp.front._
 import zio._
 

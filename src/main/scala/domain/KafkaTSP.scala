@@ -9,35 +9,22 @@ final case class KafkaSink(
   parallelism: Int,
   batchInterval: Int,
   rowSchema: RowSchema
-) extends Sink {
-  override val abstractParallelism: Int     = parallelism
-  override val abstractBatchInterval: Int   = batchInterval
-  override val abstractRowSchema: RowSchema = rowSchema
-}
+)
 
 @JsonCodec
 final case class KafkaSource(
+  sourceId: Int,
   driverName: String,
   columns: List[String],
   topic: String,
-  sourceId: Int,
   parallelism: Int,
-  dateTimeField: String,
+  datetimeField: String,
   eventsMaxGapMs: Int,
   partitionFields: List[String],
   defaultEventsGapMs: Int,
   numParallelSources: Int,
   patternsParallelism: Int
-) extends Source {
-  override val abstractSourceId: Int                 = sourceId
-  override val abstractParallelism: Int              = parallelism
-  override val abstractDateTimeField: String         = dateTimeField
-  override val abstractEventsMaxGapMs: Int           = eventsMaxGapMs
-  override val abstractPartitionFields: List[String] = partitionFields
-  override val abstractDefaultEventsGapMs: Int       = defaultEventsGapMs
-  override val abstractNumParallelSources: Int       = numParallelSources
-  override val abstractPatternsParallelism: Int      = patternsParallelism
-}
+)
 
 @JsonCodec
 final case class KafkaTSPTask(
@@ -45,4 +32,4 @@ final case class KafkaTSPTask(
   uuid: String,
   patterns: List[Rule],
   source: KafkaSource
-)
+) extends TSPTask

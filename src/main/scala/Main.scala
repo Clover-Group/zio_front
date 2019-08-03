@@ -2,7 +2,7 @@ package clover.tsp.front
 
 import cats.effect._
 import clover.tsp.front.config._
-import clover.tsp.front.http.{ DBService, Service }
+import clover.tsp.front.http.{ DBService }
 import clover.tsp.front.repository._
 import org.http4s.implicits._
 import org.http4s.server.Router
