@@ -6,7 +6,7 @@ val PureConfigVersion = "0.11.1"
 val ZioVersion        = "1.0.0-RC10-1"
 val ZioCatsVersion    = "1.3.1.0-RC3"
 val ScalaTestVersion  = "3.0.8"
-val DoobieVersion     = "0.8.0-M1"
+val DoobieVersion     = "0.8.0-M3"
 val H2Version         = "1.4.199"
 val FlywayVersion     = "5.2.4"
 val Specs2Version     = "4.6.0"
@@ -49,38 +49,42 @@ lazy val root = (project in file("."))
     )
   )
 
-scalacOptions := Seq(
-  "-Xsource:2.13",
-  "-Xlint",
-  "-Xverify",
-  "-feature",
-  "-deprecation",
-  "-explaintypes",
-  "-unchecked",
-  "-Xfuture",
-  "-encoding",
-  "UTF-8",
-  "-Yrangepos",
-  "-Xlint:_,-type-parameter-shadow",
-  "-Ywarn-numeric-widen",
-  "-Ywarn-unused",
-  "-Ywarn-value-discard",
-  "-language:higherKinds",
-  "-language:existentials",
-  "-Yno-adapted-args",
-  "-Ypartial-unification",
-  "-Xlint:-infer-any,_",
-  "-Ywarn-value-discard",
-  "-Ywarn-numeric-widen",
-  "-Ywarn-extra-implicit",
-  "-Ywarn-unused:_",
-  "-Ywarn-inaccessible",
-  "-Ywarn-nullary-override",
-  "-Ywarn-nullary-unit",
-  "-opt-inline-from:<source>",
-  "-opt-warnings",
-  "-opt:l:inline"
+scalacOptions --= Seq(
+  "-Xfatal-warnings"
 )
+
+//scalacOptions := Seq(
+//  "-Xsource:2.13",
+//  "-Xlint",
+//  "-Xverify",
+//  "-feature",
+//  "-deprecation",
+//  "-explaintypes",
+//  "-unchecked",
+//  "-Xfuture",
+//  "-encoding",
+//  "UTF-8",
+//  "-Yrangepos",
+//  "-Xlint:_,-type-parameter-shadow",
+//  "-Ywarn-numeric-widen",
+//  "-Ywarn-unused",
+//  "-Ywarn-value-discard",
+//  "-language:higherKinds",
+//  "-language:existentials",
+//  "-Yno-adapted-args",
+//  "-Ypartial-unification",
+//  "-Xlint:-infer-any,_",
+//  "-Ywarn-value-discard",
+//  "-Ywarn-numeric-widen",
+//  "-Ywarn-extra-implicit",
+//  "-Ywarn-unused:_",
+//  "-Ywarn-inaccessible",
+//  "-Ywarn-nullary-override",
+//  "-Ywarn-nullary-unit",
+//  "-opt-inline-from:<source>",
+//  "-opt-warnings",
+//  "-opt:l:inline"
+//)
 
 addCompilerPlugin("org.scalamacros" % "paradise" % ParadiseVersion cross CrossVersion.full)
 
