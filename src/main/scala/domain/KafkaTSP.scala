@@ -2,7 +2,6 @@ package clover.tsp.front.domain
 
 import io.circe.generic.JsonCodec
 
-@JsonCodec
 final case class KafkaSink(
   driverName: String,
   topic: String,
@@ -11,7 +10,6 @@ final case class KafkaSink(
   rowSchema: RowSchema
 )
 
-@JsonCodec
 final case class KafkaSource(
   sourceId: Int,
   driverName: String,
@@ -26,7 +24,6 @@ final case class KafkaSource(
   patternsParallelism: Int
 )
 
-@JsonCodec
 final case class KafkaTSPTask(
   sink: KafkaSink,
   uuid: String,

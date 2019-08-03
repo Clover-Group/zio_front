@@ -53,7 +53,7 @@ class SimpleFrontTestCase(unittest.TestCase):
         )
 
         self.expected_data = {
-            'data': 'test data'
+            'data': 'some data'
         }
 
     def test_ch_processing(self):
