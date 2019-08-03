@@ -1,5 +1,7 @@
 package clover.tsp.front
 
+import io.circe.generic.JsonCodec
+
 final case class TodoId(value: Long) extends AnyVal
 
 final case class TodoPayload(
@@ -42,3 +44,69 @@ final case class TodoItemPatchForm(
   completed: Option[Boolean] = None,
   order: Option[Int] = None
 )
+
+final case class DBInfoForm(
+  source: String,
+  sink: String,
+  dbType: String,
+  query: String
+)
+
+@JsonCodec
+final case class RowSchema(
+  toTsField: String,
+  fromTsField: String,
+  contextField: String,
+  sourceIdField: String,
+  patternIdField: String,
+  forwardedFields: List[String],
+  processingTsField: String,
+  appIdFieldVal: List[String]
+)
+
+@JsonCodec
+final case class Sink(
+  jdbcUrl: String,
+  password: String,
+  userName: String,
+  tableName: String,
+  driverName: String,
+  parallelism: Int,
+  batchInterval: Int,
+  rowSchema: RowSchema
+)
+
+@JsonCodec
+final case class Source(
+  query: String,
+  jdbcUrl: String,
+  password: String,
+  sourceId: Int,
+  userName: String,
+  driverName: String,
+  parallelism: Int,
+  dateTimeField: String,
+  eventsMaxGapMs: Int,
+  partitionFields: List[String],
+  defaultEventsGapMs: Int,
+  numParallelSources: Int,
+  patternsParallelism: Int
+)
+
+@JsonCodec
+final case class Rule(
+  id: String,
+  payload: Map[String, String],
+  sourceCode: String,
+  forwardedFields: List[String]
+)
+
+@JsonCodec
+final case class TSPTask(
+  sink: Sink,
+  uuid: String,
+  patterns: List[Rule],
+  source: Source
+)
+
+final case class DBItem(data: String)

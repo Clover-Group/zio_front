@@ -4,8 +4,9 @@ import cats.effect.Sync
 import cats.implicits._
 import org.http4s.{ EntityDecoder, Method, Request, Response, Status, Uri }
 import org.scalatest.Assertion
+import org.specs2._
 
-class HTTPSpec extends UnitSpec {
+trait HTTPSpec2 extends Specification {
 
   protected def request[F[_]](method: Method, uri: String): Request[F] =
     Request(method = method, uri = Uri.fromString(uri).toOption.get)
@@ -21,9 +22,15 @@ class HTTPSpec extends UnitSpec {
   ): F[Unit] =
     for {
       actual <- actual
-      _ <- expectedBody.fold[F[Assertion]](actual.body.compile.toVector.map(s => assert(s.isEmpty)))(
-            expected => actual.as[A].map(x => assert(x === expected, s"Body was $x instead of $expected."))
+      _ <- expectedBody.fold(actual.body.compile.toVector.map(s => s.isEmpty))(
+            _ =>
+              actual
+                .as[A]
+                .map(x => {
+                  val result = x === expectedBody
+                  result
+                })
           )
-      _ <- F.delay(assert(actual.status == expectedStatus, s"Status was ${actual.status} instead of $expectedStatus."))
+      _ <- F.delay(actual.status must_== expectedStatus)
     } yield ()
 }

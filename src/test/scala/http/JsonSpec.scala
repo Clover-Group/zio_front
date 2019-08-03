@@ -16,7 +16,6 @@ import zio.{ DefaultRuntime, Ref, UIO, ZIO }
 import zio.interop.catz._
 
 class JsonSpec extends HTTPSpec {
-
   import JsonSpec._
   import JsonSpec.todoService._
 
@@ -33,29 +32,15 @@ class JsonSpec extends HTTPSpec {
     }
 
     it("should parse json") {
-      val req0 = request(Method.POST, "/").withEntity(TodoItemPostForm("Test"))
 
-      val body =
-        json"""
-      {
-        "title"     :"One",
-        "completed" : true,
-        "order"     : null
-      }"""
+      val body = json"""{"title":"One"}"""
 
-      val req = request[TodoTask](Method.PATCH, "/1").withEntity(body)
+      val req = request[TodoTask](Method.POST, "/").withEntity(body)
 
-      runWithEnv(for {
-        t0 <- check(app.run(req0), Status.Created, Some(TodoItemWithUri(1L, "/1", "Test", false, None)))
-        t1 <- check(
-               app.run(req),
-               Status.Ok,
-               //Some(Nil))
-               Some(TodoItemWithUri(1L, "/1", "One", true, None))
-             )
-
-      } yield ())
-
+      runWithEnv(
+        check(app.run(req), Status.Created, Some(Nil))
+        //Some(TodoItemWithUri(1L, "/1", "Test", false, None))
+      )
     }
   }
 }
@@ -70,7 +55,8 @@ object JsonSpec extends DefaultRuntime {
       counter <- Ref.make(0L)
       repo    = InMemoryRepository(store, counter)
       env = new Repository {
-        override val todoRepository: Repository.Service[Any] = repo
+        override val todoRepository: Repository.Service[Any]         = repo
+        override val dbInfoRepository: Repository.SimpleService[Any] = null
       }
     } yield env
 
