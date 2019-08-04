@@ -24,7 +24,7 @@ import java.nio.charset.StandardCharsets
 import io.circe.Json
 import org.http4s.{ Method, Status }
 
-class TSPHttpTasksSpec extends HTTPSpec2 {
+class TSPOtherSpec extends HTTPSpec2 {
   import TSPOtherSpec._
   import TSPOtherSpec.dbInfoService._
 

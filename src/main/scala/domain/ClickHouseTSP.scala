@@ -2,7 +2,6 @@ package clover.tsp.front.domain
 
 import io.circe.generic.JsonCodec
 
-@JsonCodec
 final case class CHRowSchema(
   toTsField: String,
   fromTsField: String,
@@ -14,7 +13,6 @@ final case class CHRowSchema(
   appIdFieldVal: List[String]
 )
 
-@JsonCodec
 final case class CHSink(
   jdbcUrl: String,
   password: String,
@@ -26,7 +24,6 @@ final case class CHSink(
   rowSchema: CHRowSchema
 )
 
-@JsonCodec
 final case class CHSource(
   query: String,
   jdbcUrl: String,
@@ -43,7 +40,6 @@ final case class CHSource(
   patternsParallelism: Int
 )
 
-@JsonCodec
 final case class CHTSPTask(
   sink: CHSink,
   uuid: String,
