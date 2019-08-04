@@ -1,0 +1,56 @@
+{
+   "sink":{
+      "jdbcUrl":"",
+      "password":"",
+      "userName":"",
+      "rowSchema":{
+         "toTsField":"to_ts",
+         "fromTsField":"from_ts",
+         "contextField":"context",
+         "appIdFieldVal":[
+            "type",
+            "1"
+         ],
+         "sourceIdField":"series_storage",
+         "patternIdField":"entity_id",
+         "forwardedFields":[
+            "loco_num",
+            "Section",
+            "upload_id"
+         ],
+         "processingTsField":"processing_ts"
+      },
+      "tableName":"events_2te116u_test_tsp",
+      "driverName":"org.postgresql.Driver",
+      "parallelism":1,
+      "batchInterval":5000
+   },
+   "uuid":"126a0782-0bc4-4853-b534-b7b80316feb9",
+   "source":{
+      "query":"SELECT ts, loco_num AS loco_num, section AS \"Section\", upload_id AS upload_id, PowerPolling, TWaterInChargeAirCooler, TExGasTurbineRight, SensorBrakeRelease, TOilInDiesel, SpeedEngine, Speed, TExGasCylinder8Right, RelayTOil, CurrentArmTED3, TExGasCylinder5Left, CurrentStarterGenerator, SpeedWp5, WaterRheostat, RelayFieldWeakStage2, TExGasCylinder1Right, TExGasCylinder2Left, PosKM, TExGasCylinder8Left, ContactorFuelPump, TExGasCylinder4Left, SpeedWp2, CurrentArmTED6, CurrentArmTED4, TWaterOutDiesel, CurrentArmTED1, TExGasCylinder1Left, TExGasCylinder7Right, Boxing, TColdJump, CurrentExcitationGenerator, TExGasCylinder2Right, ContactorOilPump, SpeedWp4, TExGasCylinder5Right, TExGasTurbineLeft, CurrentCompressorMotor, TExGasCylinder6Right, SwitchR3PlusFromDM, SpeedWp3, ContactorBlockOilPumpKMN, PFuelFilter, TExGasCylinder7Left, RelayFieldWeakStage1, RelaySandFeed, SpeedWp1, CurrentArmTED5, RelayTWater, TExGasCylinder3Left, SwitchR3MinusFromDM, SpeedWp6, PAirMainRes, Pboost, CurrentArmTED2, TExGasCylinder6Left, TExGasCylinder3Right, TOilOutDiesel, TExGasCylinder4Right, CurrentDistribution, PFuelTNVD \nFROM \"2te116u_tmy_20180518_wide\" \nWHERE upload_id = '1605801' AND ts >= 1548979200.0 AND ts < 1554076800.0 ORDER BY ts",
+      "jdbcUrl":"",
+      "password":"",
+      "sourceId":2,
+      "userName":"",
+      "driverName":"ru.yandex.clickhouse.ClickHouseDriver",
+      "parallelism":1,
+      "dateTimeField":"ts",
+      "eventsMaxGapMs":60000,
+      "partitionFields":[
+         "loco_num",
+         "Section",
+         "upload_id"
+      ],
+      "defaultEventsGapMs":2000,
+      "numParallelSources":1,
+      "patternsParallelism":1
+   },
+   "patterns":[
+      {
+         "id":"49",
+         "payload":{},
+         "sourceCode":"PosKM = 0 andThen ((SpeedEngine > 0 for 1 min ) and (PosKM > 4 for 1 min < 30 sec))",
+         "forwardedFields":[]
+      }
+   ]
+}

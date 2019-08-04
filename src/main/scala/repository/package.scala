@@ -1,6 +1,8 @@
 package clover.tsp.front
 
-import zio.{ ZIO }
+import clover.tsp.front.domain.{ DBItem, TSPTask }
+import clover.tsp.front.repository.Repository
+import zio.ZIO
 
 package object repository extends Repository.Service[Repository] {
 
@@ -19,4 +21,9 @@ package object repository extends Repository.Service[Repository] {
   override def update(id: TodoId, todoItemForm: TodoItemPatchForm): ZIO[Repository, Nothing, Option[TodoItem]] =
     ZIO.accessM(_.todoRepository.update(id, todoItemForm))
 
+}
+
+package object simpleRepository extends Repository.SimpleService[Repository] {
+  override def get(task: TSPTask): ZIO[Repository, Nothing, DBItem] =
+    ZIO.accessM(_.dbInfoRepository.get(task))
 }

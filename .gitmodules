@@ -1,0 +1,3 @@
+[submodule "zio-kafka"]
+	path = zio-kafka
+	url = https://github.com/Clover-Group/zio-kafka

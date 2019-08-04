@@ -31,19 +31,16 @@ class JsonSpec extends HTTPSpec {
       runWithEnv(check(app.run(req), Status.Created, Some(TodoItemWithUri(1L, "/1", "Test", false, None))))
     }
 
-    it("work with json") {
+    it("should parse json") {
 
-      val body = json"""{"hello":"world"}"""
-      val req  = request[TodoTask](Method.POST, "/").withEntity(body)
+      val body = json"""{"title":"One"}"""
+
+      val req = request[TodoTask](Method.POST, "/").withEntity(body)
 
       runWithEnv(
-        check(
-          app.run(req),
-          Status.Created,
-          Some(TodoItemWithUri(1L, "/1", "Test", false, None))
-        )
+        check(app.run(req), Status.Created, Some(Nil))
+        //Some(TodoItemWithUri(1L, "/1", "Test", false, None))
       )
-
     }
   }
 }
@@ -58,7 +55,8 @@ object JsonSpec extends DefaultRuntime {
       counter <- Ref.make(0L)
       repo    = InMemoryRepository(store, counter)
       env = new Repository {
-        override val todoRepository: Repository.Service[Any] = repo
+        override val todoRepository: Repository.Service[Any]         = repo
+        override val dbInfoRepository: Repository.SimpleService[Any] = null
       }
     } yield env
 

@@ -1,6 +1,4 @@
-package clover.tsp.front
-
-// import io.circe.generic.JsonCodec
+package clover.tsp.front.domain
 
 final case class TodoId(value: Long) extends AnyVal
 
@@ -43,11 +41,4 @@ final case class TodoItemPatchForm(
   title: Option[String] = None,
   completed: Option[Boolean] = None,
   order: Option[Int] = None
-)
-
-final case class DBInfoForm(
-  source: String,
-  sink: String,
-  dbType: String,
-  query: String
 )
