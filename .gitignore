@@ -5,6 +5,7 @@
 target
 project/target/
 project/project
+zio-kafka
 
 # Python
 *_env
