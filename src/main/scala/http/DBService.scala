@@ -1,16 +1,15 @@
 package clover.tsp.front.http
 
 import clover.tsp.front.domain.{ CHTSPTask, DBItem, KafkaTSPTask, TSPTask }
-import clover.tsp.front.{ simpleRepository }
 import clover.tsp.front.repository.Repository
 import org.http4s.circe._
 import org.http4s.dsl.Http4sDsl
 import org.http4s.{ EntityDecoder, EntityEncoder, HttpRoutes }
 import com.typesafe.scalalogging.Logger
-import zio.{ Ref, Task, UIO, ZIO }
+import zio.{ Ref}
 import zio.TaskR
 import zio.interop.catz._
-import clover.tsp.front.repository.Repository.DBInfoRepository
+import clover.tsp.front.repository.DBInfoRepository
 import cats.syntax.functor._
 import io.circe.{ Decoder, Encoder }, io.circe.generic.auto._
 import io.circe.syntax._

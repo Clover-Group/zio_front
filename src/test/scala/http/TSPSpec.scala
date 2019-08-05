@@ -6,7 +6,7 @@ import clover.tsp.front.domain.{ DBItem }
 
 import clover.tsp.front.{ HTTPSpec }
 import clover.tsp.front.repository.Repository
-import clover.tsp.front.repository.Repository.DBInfoRepository
+import clover.tsp.front.repository.DBInfoRepository
 import io.circe.literal._
 import io.circe.generic.auto._
 import io.circe.parser._

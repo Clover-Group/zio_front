@@ -3,7 +3,7 @@ package clover.tsp.front.http
 import clover.tsp.front._
 import clover.tsp.front.http.Service.TodoItemWithUri
 import clover.tsp.front.repository.Repository
-import clover.tsp.front.repository.Repository.InMemoryRepository
+import clover.tsp.front.repository.InMemoryRepository
 
 import io.circe.literal._
 import io.circe.generic.auto._
