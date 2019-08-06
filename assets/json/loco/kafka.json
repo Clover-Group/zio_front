@@ -3,6 +3,7 @@
     "driverName": "kafka",
     "topic": "test_topic_sink",
     "rowSchema": {
+      "values": ["1565027500", "1565027600", "test", "2", "4", "6", "test"],
       "toTsField": "to_ts",
       "fromTsField": "from_ts",
       "contextField": "context",

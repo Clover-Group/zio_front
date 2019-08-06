@@ -6,6 +6,7 @@ final case class DBItem(data: String)
 
 @JsonCodec
 final case class RowSchema(
+  values: List[String],
   toTsField: String,
   fromTsField: String,
   contextField: String,
