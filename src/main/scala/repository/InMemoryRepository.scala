@@ -1,8 +1,8 @@
 package clover.tsp.front.repository
 
-import clover.tsp.front.{TodoId, TodoItem, TodoItemPatchForm, TodoItemPostForm}
+import clover.tsp.front.{ TodoId, TodoItem, TodoItemPatchForm, TodoItemPostForm }
 import clover.tsp.front.repository.Repository.Service
-import zio.{Ref, UIO, ZIO}
+import zio.{ Ref, UIO, ZIO }
 
 final case class InMemoryRepository(ref: Ref[Map[TodoId, TodoItem]], counter: Ref[Long]) extends Service[Any] {
 
@@ -29,9 +29,9 @@ final case class InMemoryRepository(ref: Ref[Map[TodoId, TodoItem]], counter: Re
     for {
       oldValue <- getById(id)
       result <- oldValue.fold[UIO[Option[TodoItem]]](ZIO.succeed(None)) { x =>
-        val newValue = x.update(todoItemForm)
-        ref.update(store => store + (newValue.id -> newValue)) *> ZIO.succeed(Some(newValue))
-      }
+                 val newValue = x.update(todoItemForm)
+                 ref.update(store => store + (newValue.id -> newValue)) *> ZIO.succeed(Some(newValue))
+               }
     } yield result
 
 }
