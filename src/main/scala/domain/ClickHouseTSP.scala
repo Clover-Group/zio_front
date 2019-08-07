@@ -1,6 +1,6 @@
 package clover.tsp.front.domain
 
-import io.circe.generic.JsonCodec
+// import io.circe.generic.JsonCodec
 
 final case class CHRowSchema(
   toTsField: String,
