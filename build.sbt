@@ -1,19 +1,20 @@
-val Http4sVersion     = "0.21.0-SNAPSHOT"
-val CirceVersion      = "0.12.0-M4"
+val Http4sVersion     = "0.21.0-M3"
+val CirceVersion      = "0.12.0-RC1"
 val LogbackVersion    = "1.2.3"
 val ScalaLogVersion   = "3.9.2"
 val PureConfigVersion = "0.11.1"
-val ZioVersion        = "1.0.0-RC10-1"
-val ZioCatsVersion    = "1.3.1.0-RC3"
-val ScalaTestVersion  = "3.0.8"
-val DoobieVersion     = "0.8.0-M3"
-val H2Version         = "1.4.199"
-val FlywayVersion     = "5.2.4"
-val Specs2Version     = "4.6.0"
-val ParadiseVersion   = "2.1.1"
+//val ZioVersion        = "1.0.0-RC11-1"
+//val ZioCatsVersion    = "2.0.0.0-RC2"
+val ZioVersion       = "1.0.0-RC10-1"
+val ZioCatsVersion   = "1.3.1.0-RC3"
+val CatsEffVersion   = "2.0.0-M5"
+val DoobieVersion    = "0.8.0-M3"
+val H2Version        = "1.4.199"
+val FlywayVersion    = "5.2.4"
+val Specs2Version    = "4.7.0"
+val ParadiseVersion  = "2.1.1"
+val ScalaTestVersion = "3.0.8"
 
-val KindProjVersion         = "0.9.10"
-val BetterMonadicForVersion = "0.3.0"
 resolvers += Resolver.sonatypeRepo("snapshots")
 
 lazy val root = (project in file("."))
@@ -21,10 +22,14 @@ lazy val root = (project in file("."))
     organization := "CloverGroup",
     name := "front",
     version := "0.1.0",
-    scalaVersion := "2.12.8",
+    scalaVersion := "2.12.9",
     maxErrors := 3,
     updateOptions := updateOptions.value.withLatestSnapshots(false),
     libraryDependencies ++= Seq(
+      "org.specs2"                 %% "specs2-core"            % Specs2Version % Test,
+      "dev.zio"                    %% "zio"                    % ZioVersion,
+      "dev.zio"                    %% "zio-interop-cats"       % ZioCatsVersion,
+      "org.typelevel"              %% "cats-effect"            % CatsEffVersion,
       "org.http4s"                 %% "http4s-blaze-server"    % Http4sVersion,
       "org.http4s"                 %% "http4s-blaze-client"    % Http4sVersion,
       "org.http4s"                 %% "http4s-circe"           % Http4sVersion,
@@ -39,13 +44,10 @@ lazy val root = (project in file("."))
       "org.flywaydb"               % "flyway-core"             % FlywayVersion,
       "ch.qos.logback"             % "logback-classic"         % LogbackVersion,
       "com.typesafe.scala-logging" %% "scala-logging"          % ScalaLogVersion,
-      "org.scalactic"              %% "scalactic"              % ScalaTestVersion,
-      "org.scalatest"              %% "scalatest"              % ScalaTestVersion,
       "com.github.pureconfig"      %% "pureconfig"             % PureConfigVersion,
       "com.github.pureconfig"      %% "pureconfig-cats-effect" % PureConfigVersion,
-      "dev.zio"                    %% "zio"                    % ZioVersion,
-      "dev.zio"                    %% "zio-interop-cats"       % ZioCatsVersion,
-      "org.specs2"                 %% "specs2-core"            % Specs2Version % Test
+      "org.scalactic"              %% "scalactic"              % ScalaTestVersion,
+      "org.scalatest"              %% "scalatest"              % ScalaTestVersion
     )
   )
 
