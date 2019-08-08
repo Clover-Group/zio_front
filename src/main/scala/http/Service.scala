@@ -7,7 +7,7 @@ import io.circe.{ Decoder, Encoder }
 import org.http4s._
 import org.http4s.circe._
 import org.http4s.dsl.Http4sDsl
-import zio.TaskR
+import zio.RIO
 import zio.interop.catz._
 
 import com.typesafe.scalalogging.Logger
@@ -15,7 +15,7 @@ import com.typesafe.scalalogging.Logger
 final case class Service[R <: Repository](rootUri: String) {
   import Service._
 
-  type TodoTask[A] = TaskR[R, A]
+  type TodoTask[A] = RIO[R, A]
 
   implicit def circeJsonDecoder[A](implicit decoder: Decoder[A]): EntityDecoder[TodoTask, A] = jsonOf[TodoTask, A]
   implicit def circeJsonEncoder[A](implicit encoder: Encoder[A]): EntityEncoder[TodoTask, A] =
