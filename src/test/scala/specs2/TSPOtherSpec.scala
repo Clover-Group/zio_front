@@ -2,14 +2,14 @@ package clover.tsp.front.specs2
 
 import java.nio.file.Paths
 
-import clover.tsp.front.domain.{ DBItem }
+import clover.tsp.front.domain.DBItem
 import clover.tsp.front.http.DBService
 import io.circe.literal._
 import io.circe.parser._
 import org.specs2.specification.core.SpecStructure
-import clover.tsp.front.{ HTTPSpec2 }
+import clover.tsp.front.HTTPSpec2
 import clover.tsp.front.repository.Repository
-import clover.tsp.front.repository.Repository.DBInfoRepository
+import clover.tsp.front.repository.DBInfoRepository
 import org.http4s.implicits._
 import org.http4s.dsl.Http4sDsl
 import zio.{ Ref, Task, UIO, ZIO }

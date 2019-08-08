@@ -5,7 +5,7 @@ import clover.tsp.front.config._
 import clover.tsp.front.http.{ DBService }
 import clover.tsp.front.repository._
 import clover.tsp.front.repository.Repository
-import clover.tsp.front.repository.Repository.DBInfoRepository
+import clover.tsp.front.repository.DBInfoRepository
 import clover.tsp.front.domain.{ DBItem }
 import org.http4s.implicits._
 import org.http4s.server.Router
@@ -22,7 +22,7 @@ import zio.interop.catz._
 object Main extends App {
 
   type AppEnvironment = Clock with Console with Blocking with Repository
-  type AppTask[A]     = TaskR[AppEnvironment, A]
+  type AppTask[A]     = RIO[AppEnvironment, A]
 
   override def run(args: List[String]): ZIO[Environment, Nothing, Int] =
     (for {
