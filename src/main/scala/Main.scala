@@ -4,6 +4,9 @@ import cats.effect._
 import clover.tsp.front.config._
 import clover.tsp.front.http.{ DBService }
 import clover.tsp.front.repository._
+import clover.tsp.front.repository.Repository
+import clover.tsp.front.repository.DBInfoRepository
+import clover.tsp.front.domain.{ DBItem }
 import org.http4s.implicits._
 import org.http4s.server.Router
 import org.http4s.server.blaze.BlazeServerBuilder
@@ -42,14 +45,21 @@ object Main extends App {
           .drain
       }
 
+      store   <- Ref.make(DBItem("some data"))
+      counter <- Ref.make(0L)
+
       program <- transactorR.use { transactor =>
                   server.provideSome[Environment] { base =>
-                    new Clock with Console with Blocking with DoobieRepository {
+                    new Clock with Console with Blocking with DoobieRepository with Repository {
                       override protected def xa: doobie.Transactor[Task] = transactor
 
                       override val console: Console.Service[Any]   = base.console
                       override val clock: Clock.Service[Any]       = base.clock
                       override val blocking: Blocking.Service[Any] = base.blocking
+
+                      override val dbInfoRepository: Repository.SimpleService[Any] =
+                        DBInfoRepository(store, counter)
+                      override val todoRepository: Repository.Service[Any] = null
                     }
                   }
                 }
