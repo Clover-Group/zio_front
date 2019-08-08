@@ -15,39 +15,36 @@ val ScalaTestVersion  = "3.0.8"
 
 resolvers += Resolver.sonatypeRepo("snapshots")
 
-lazy val root = (project in file("."))
-  .settings(
-    organization := "CloverGroup",
-    name := "front",
-    version := "0.1.0",
-    scalaVersion := "2.12.9",
-    maxErrors := 3,
-    updateOptions := updateOptions.value.withLatestSnapshots(false),
-    libraryDependencies ++= Seq(
-      "org.specs2"                 %% "specs2-core"            % Specs2Version % Test,
-      "dev.zio"                    %% "zio"                    % ZioVersion,
-      "dev.zio"                    %% "zio-interop-cats"       % ZioCatsVersion,
-      "org.typelevel"              %% "cats-effect"            % CatsEffVersion,
-      "org.http4s"                 %% "http4s-blaze-server"    % Http4sVersion,
-      "org.http4s"                 %% "http4s-blaze-client"    % Http4sVersion,
-      "org.http4s"                 %% "http4s-circe"           % Http4sVersion,
-      "org.http4s"                 %% "http4s-dsl"             % Http4sVersion,
-      "io.circe"                   %% "circe-generic"          % CirceVersion,
-      "io.circe"                   %% "circe-literal"          % CirceVersion,
-      "io.circe"                   %% "circe-parser"           % CirceVersion,
-      "org.tpolecat"               %% "doobie-core"            % DoobieVersion,
-      "org.tpolecat"               %% "doobie-h2"              % DoobieVersion,
-      "org.tpolecat"               %% "doobie-hikari"          % DoobieVersion,
-      "com.h2database"             % "h2"                      % H2Version,
-      "org.flywaydb"               % "flyway-core"             % FlywayVersion,
-      "ch.qos.logback"             % "logback-classic"         % LogbackVersion,
-      "com.typesafe.scala-logging" %% "scala-logging"          % ScalaLogVersion,
-      "com.github.pureconfig"      %% "pureconfig"             % PureConfigVersion,
-      "com.github.pureconfig"      %% "pureconfig-cats-effect" % PureConfigVersion,
-      "org.scalactic"              %% "scalactic"              % ScalaTestVersion,
-      "org.scalatest"              %% "scalatest"              % ScalaTestVersion
-    )
-  )
+organization := "CloverGroup"
+name := "front"
+version := "0.1.0"
+scalaVersion := "2.12.9"
+maxErrors := 3
+updateOptions := updateOptions.value.withLatestSnapshots(false)
+libraryDependencies ++= Seq(
+  "org.specs2"                 %% "specs2-core"            % Specs2Version % Test,
+  "dev.zio"                    %% "zio"                    % ZioVersion,
+  "dev.zio"                    %% "zio-interop-cats"       % ZioCatsVersion,
+  "org.typelevel"              %% "cats-effect"            % CatsEffVersion,
+  "org.http4s"                 %% "http4s-blaze-server"    % Http4sVersion,
+  "org.http4s"                 %% "http4s-blaze-client"    % Http4sVersion,
+  "org.http4s"                 %% "http4s-circe"           % Http4sVersion,
+  "org.http4s"                 %% "http4s-dsl"             % Http4sVersion,
+  "io.circe"                   %% "circe-generic"          % CirceVersion,
+  "io.circe"                   %% "circe-literal"          % CirceVersion,
+  "io.circe"                   %% "circe-parser"           % CirceVersion,
+  "org.tpolecat"               %% "doobie-core"            % DoobieVersion,
+  "org.tpolecat"               %% "doobie-h2"              % DoobieVersion,
+  "org.tpolecat"               %% "doobie-hikari"          % DoobieVersion,
+  "com.h2database"             % "h2"                      % H2Version,
+  "org.flywaydb"               % "flyway-core"             % FlywayVersion,
+  "ch.qos.logback"             % "logback-classic"         % LogbackVersion,
+  "com.typesafe.scala-logging" %% "scala-logging"          % ScalaLogVersion,
+  "com.github.pureconfig"      %% "pureconfig"             % PureConfigVersion,
+  "com.github.pureconfig"      %% "pureconfig-cats-effect" % PureConfigVersion,
+  "org.scalactic"              %% "scalactic"              % ScalaTestVersion,
+  "org.scalatest"              %% "scalatest"              % ScalaTestVersion
+)
 
 scalacOptions --= Seq(
   "-Xfatal-warnings"
