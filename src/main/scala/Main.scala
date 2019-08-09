@@ -1,22 +1,21 @@
 package clover.tsp.front
 
-import cats.effect._
+import cats.effect.{ Blocker, ExitCode }
 import clover.tsp.front.config._
 import clover.tsp.front.http.DBService
 import clover.tsp.front.repository._
-import clover.tsp.front.repository.Repository
-import clover.tsp.front.repository.DBInfoRepository
 import clover.tsp.front.domain.DBItem
+
 import org.http4s.implicits._
 import org.http4s.server.Router
 import org.http4s.server.blaze.BlazeServerBuilder
 import org.http4s.server.middleware.CORS
 import pureconfig.generic.auto._
 
-import zio._
+import zio.{ App, RIO, Ref, Task, ZIO }
 import zio.blocking.Blocking
 import zio.clock.Clock
-import zio.console._
+import zio.console.{ putStrLn, Console }
 import zio.interop.catz._
 
 object Main extends App {

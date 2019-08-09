@@ -1,7 +1,7 @@
 package clover.tsp.front.repository
 import clover.tsp.front._
 import clover.tsp.front.repository.DoobieRepository.SQL
-import doobie._
+import doobie.{ Query0, Transactor, Update0 }
 import doobie.implicits._
 import zio.interop.catz._
 import zio.{ Task, ZIO }

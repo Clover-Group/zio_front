@@ -3,7 +3,7 @@ package clover.tsp.front.http
 import clover.tsp.front.simpleRepository
 import clover.tsp.front.domain.{ CHTSPTask, KafkaTSPTask, TSPTask }
 import clover.tsp.front.repository.Repository
-import org.http4s.circe._
+import org.http4s.circe.{ jsonEncoderOf, jsonOf }
 import org.http4s.dsl.Http4sDsl
 import org.http4s.{ EntityDecoder, EntityEncoder, HttpRoutes }
 import com.typesafe.scalalogging.Logger

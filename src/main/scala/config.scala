@@ -3,7 +3,7 @@ package clover.tsp.front
 import doobie.hikari._
 import doobie.util.transactor.Transactor
 import org.flywaydb.core.Flyway
-import zio._
+import zio.{ Reservation, Task, ZIO, ZManaged }
 import zio.interop.catz._
 
 import scala.concurrent.ExecutionContext
@@ -42,7 +42,7 @@ object config {
     cfg: DBConfig,
     connectEC: ExecutionContext,
     transactEC: Blocker
-  ): Managed[Throwable, Transactor[Task]] = {
+  ): ZManaged[Any, Throwable, Transactor[Task]] = {
     val xa =
       HikariTransactor.newHikariTransactor[Task](cfg.driver, cfg.url, cfg.user, cfg.password, connectEC, transactEC)
 
