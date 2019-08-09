@@ -1,6 +1,6 @@
 package clover.tsp.front.http
 
-import clover.tsp.front.{ simpleRepository }
+import clover.tsp.front.simpleRepository
 import clover.tsp.front.domain.{ CHTSPTask, KafkaTSPTask, TSPTask }
 import clover.tsp.front.repository.Repository
 import org.http4s.circe._
@@ -43,18 +43,16 @@ final case class DBService[R <: Repository](rootUri: String) {
         log.debug("Root method called")
         log.debug(s"req: $req")
         for {
-          task    <- req.as[TSPTask]
+          task <- req.as[TSPTask]
           dbInfoItem <- task match {
-                         case kafkaJson @ KafkaTSPTask(_, _, _, _) => {
+                         case kafkaJson @ KafkaTSPTask(_, _, _, _) =>
                            // TODO call instance of kafka service
                            print("!!!!!!!!! kafka !!!!!!!!!!!!")
                            simpleRepository.get(kafkaJson);
-                         }
-                         case chJson @ CHTSPTask(_, _, _, _) => {
+                         case chJson @ CHTSPTask(_, _, _, _) =>
                            // TODO call instance of ClickHouse service
                            print("!!!!!!!!! ClickHouse !!!!!!!!!!!!")
                            simpleRepository.get(chJson);
-                         }
                        }
           res <- Ok(dbInfoItem)
         } yield res

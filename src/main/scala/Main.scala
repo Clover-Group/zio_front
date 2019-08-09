@@ -2,11 +2,11 @@ package clover.tsp.front
 
 import cats.effect._
 import clover.tsp.front.config._
-import clover.tsp.front.http.{ DBService }
+import clover.tsp.front.http.DBService
 import clover.tsp.front.repository._
 import clover.tsp.front.repository.Repository
 import clover.tsp.front.repository.DBInfoRepository
-import clover.tsp.front.domain.{ DBItem }
+import clover.tsp.front.domain.DBItem
 import org.http4s.implicits._
 import org.http4s.server.Router
 import org.http4s.server.blaze.BlazeServerBuilder
