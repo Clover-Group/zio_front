@@ -11,7 +11,6 @@ val H2Version         = "1.4.199"
 val FlywayVersion     = "5.2.4"
 val Specs2Version     = "4.7.0"
 val ParadiseVersion   = "2.1.1"
-val ScalaTestVersion  = "3.0.8"
 
 resolvers += Resolver.sonatypeRepo("snapshots")
 
@@ -41,47 +40,12 @@ libraryDependencies ++= Seq(
   "ch.qos.logback"             % "logback-classic"         % LogbackVersion,
   "com.typesafe.scala-logging" %% "scala-logging"          % ScalaLogVersion,
   "com.github.pureconfig"      %% "pureconfig"             % PureConfigVersion,
-  "com.github.pureconfig"      %% "pureconfig-cats-effect" % PureConfigVersion,
-  "org.scalactic"              %% "scalactic"              % ScalaTestVersion,
-  "org.scalatest"              %% "scalatest"              % ScalaTestVersion
+  "com.github.pureconfig"      %% "pureconfig-cats-effect" % PureConfigVersion
 )
 
 scalacOptions --= Seq(
   "-Xfatal-warnings"
 )
-
-//scalacOptions := Seq(
-//  "-Xsource:2.13",
-//  "-Xlint",
-//  "-Xverify",
-//  "-feature",
-//  "-deprecation",
-//  "-explaintypes",
-//  "-unchecked",
-//  "-Xfuture",
-//  "-encoding",
-//  "UTF-8",
-//  "-Yrangepos",
-//  "-Xlint:_,-type-parameter-shadow",
-//  "-Ywarn-numeric-widen",
-//  "-Ywarn-unused",
-//  "-Ywarn-value-discard",
-//  "-language:higherKinds",
-//  "-language:existentials",
-//  "-Yno-adapted-args",
-//  "-Ypartial-unification",
-//  "-Xlint:-infer-any,_",
-//  "-Ywarn-value-discard",
-//  "-Ywarn-numeric-widen",
-//  "-Ywarn-extra-implicit",
-//  "-Ywarn-unused:_",
-//  "-Ywarn-inaccessible",
-//  "-Ywarn-nullary-override",
-//  "-Ywarn-nullary-unit",
-//  "-opt-inline-from:<source>",
-//  "-opt-warnings",
-//  "-opt:l:inline"
-//)
 
 addCompilerPlugin("org.scalamacros" % "paradise" % ParadiseVersion cross CrossVersion.full)
 

@@ -7,9 +7,7 @@ import clover.tsp.front.http.DBService
 import io.circe.literal._
 import io.circe.parser._
 import org.specs2.specification.core.SpecStructure
-import clover.tsp.front.HTTPSpec2
-import clover.tsp.front.repository.Repository
-import clover.tsp.front.repository.DBInfoRepository
+import clover.tsp.front.repository.{ DBInfoRepository, Repository }
 import org.http4s.implicits._
 import org.http4s.dsl.Http4sDsl
 import zio.{ Ref, Task, UIO, ZIO }
@@ -24,9 +22,9 @@ import java.nio.charset.StandardCharsets
 import io.circe.Json
 import org.http4s.{ Method, Status }
 
-class TSPOtherSpec extends HTTPSpec2 {
-  import TSPOtherSpec._
-  import TSPOtherSpec.dbInfoService._
+class TSPProcessingSpec extends HTTPSpec2 {
+  import TSPProcessingSpec._
+  import TSPProcessingSpec.dbInfoService._
 
   val app                        = dbInfoService.service.orNotFound
   val dsl: Http4sDsl[TSPTaskDTO] = Http4sDsl[TSPTaskDTO]
@@ -133,7 +131,7 @@ class TSPOtherSpec extends HTTPSpec2 {
     )
 }
 
-object TSPOtherSpec extends DefaultRuntime {
+object TSPProcessingSpec extends DefaultRuntime {
 
   val dbInfoService: DBService[Repository] = DBService[Repository]("")
 

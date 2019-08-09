@@ -1,9 +1,8 @@
-package clover.tsp.front
+package clover.tsp.front.specs2
 
 import cats.effect.Sync
 import cats.implicits._
-import org.http4s.{ EntityDecoder, Method, Request, Response, Status, Uri }
-import org.scalatest.Assertion
+import org.http4s._
 import org.specs2._
 
 trait HTTPSpec2 extends Specification {
