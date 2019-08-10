@@ -5,8 +5,7 @@ val ScalaLogVersion   = "3.9.2"
 val PureConfigVersion = "0.11.1"
 val ZioVersion        = "1.0.0-RC11-1"
 val ZioCatsVersion    = "2.0.0.0-RC2"
-val CatsEffVersion    = "2.0.0-M5"
-val DoobieVersion     = "0.8.0-M3"
+val DoobieVersion     = "0.8.0-RC1"
 val H2Version         = "1.4.199"
 val FlywayVersion     = "5.2.4"
 val Specs2Version     = "4.7.0"
@@ -24,7 +23,6 @@ libraryDependencies ++= Seq(
   "org.specs2"                 %% "specs2-core"            % Specs2Version % Test,
   "dev.zio"                    %% "zio"                    % ZioVersion,
   "dev.zio"                    %% "zio-interop-cats"       % ZioCatsVersion,
-  "org.typelevel"              %% "cats-effect"            % CatsEffVersion,
   "org.http4s"                 %% "http4s-blaze-server"    % Http4sVersion,
   "org.http4s"                 %% "http4s-blaze-client"    % Http4sVersion,
   "org.http4s"                 %% "http4s-circe"           % Http4sVersion,
