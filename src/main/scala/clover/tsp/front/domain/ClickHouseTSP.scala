@@ -1,7 +1,5 @@
 package clover.tsp.front.domain
 
-// import io.circe.generic.JsonCodec
-
 final case class CHRowSchema(
   toTsField: String,
   fromTsField: String,
@@ -10,7 +8,8 @@ final case class CHRowSchema(
   patternIdField: String,
   forwardedFields: List[String],
   processingTsField: String,
-  appIdFieldVal: List[String]
+  appIdFieldVal: List[String],
+  values: List[String]
 )
 
 final case class CHSink(

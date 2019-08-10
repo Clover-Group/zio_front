@@ -1,7 +1,9 @@
-package clover.tsp.front.repository
-import clover.tsp.front._
-import clover.tsp.front.repository.DoobieRepository.SQL
-import doobie.{ Query0, Transactor, Update0 }
+package clover.tsp.front.repository.implementations
+
+import clover.tsp.front.domain.{ TodoId, TodoItem, TodoItemPatchForm, TodoItemPostForm, TodoPayload }
+import clover.tsp.front.repository.interfaces.Repository
+import clover.tsp.front.repository.implementations.DoobieRepository.SQL
+import doobie._
 import doobie.implicits._
 import zio.interop.catz._
 import zio.{ Task, ZIO }

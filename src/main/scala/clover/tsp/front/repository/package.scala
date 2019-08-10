@@ -1,7 +1,8 @@
-package clover.tsp.front
+package clover.tsp.front.repository
 
+import clover.tsp.front.domain.{ TodoId, TodoItem, TodoItemPatchForm, TodoItemPostForm }
 import clover.tsp.front.domain.{ DBItem, TSPTask }
-import clover.tsp.front.repository.Repository
+import clover.tsp.front.repository.interfaces.Repository
 import zio.ZIO
 
 package object repository extends Repository.Service[Repository] {

@@ -1,21 +1,21 @@
 package clover.tsp.front
 
 import cats.effect.{ Blocker, ExitCode }
-import clover.tsp.front.config._
-import clover.tsp.front.http.DBService
-import clover.tsp.front.repository._
+import clover.tsp.front.config.{ initDb, mkTransactor, Config }
 import clover.tsp.front.domain.DBItem
-
+import clover.tsp.front.http.DBService
+import clover.tsp.front.repository.implementations
+import clover.tsp.front.repository.implementations.DoobieRepository
+import clover.tsp.front.repository.interfaces.Repository
 import org.http4s.implicits._
 import org.http4s.server.Router
 import org.http4s.server.blaze.BlazeServerBuilder
 import org.http4s.server.middleware.CORS
 import pureconfig.generic.auto._
-
-import zio.{ App, RIO, Ref, Task, ZIO }
+import zio._
 import zio.blocking.Blocking
 import zio.clock.Clock
-import zio.console.{ putStrLn, Console }
+import zio.console._
 import zio.interop.catz._
 
 object Main extends App {
@@ -57,7 +57,7 @@ object Main extends App {
                       override val blocking: Blocking.Service[Any] = base.blocking
 
                       override val dbInfoRepository: Repository.SimpleService[Any] =
-                        DBInfoRepository(store, counter)
+                        implementations.SimpleRepository(store, counter)
                       override val todoRepository: Repository.Service[Any] = null
                     }
                   }
