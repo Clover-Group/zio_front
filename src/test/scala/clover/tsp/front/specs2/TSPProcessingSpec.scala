@@ -7,7 +7,6 @@ import clover.tsp.front.http.DBService
 import io.circe.literal._
 import io.circe.parser._
 import org.specs2.specification.core.SpecStructure
-import clover.tsp.front.repository.{ DBInfoRepository, Repository }
 import org.http4s.implicits._
 import org.http4s.dsl.Http4sDsl
 import zio.{ Ref, Task, UIO, ZIO }
@@ -19,6 +18,8 @@ import scala.io.Source
 import java.io.{ File, FileInputStream }
 import java.nio.charset.StandardCharsets
 
+import clover.tsp.front.repository.implementations
+import clover.tsp.front.repository.interfaces.Repository
 import io.circe.Json
 import org.http4s.{ Method, Status }
 
@@ -139,7 +140,7 @@ object TSPProcessingSpec extends DefaultRuntime {
     for {
       store   <- Ref.make(DBItem("some data"))
       counter <- Ref.make(0L)
-      repo    = DBInfoRepository(store, counter)
+      repo    = implementations.SimpleRepository(store, counter)
       env = new Repository {
         override val dbInfoRepository: Repository.SimpleService[Any] = repo
         override val todoRepository: Repository.Service[Any]         = null

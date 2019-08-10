@@ -1,7 +1,6 @@
-package clover.tsp.front.repository
+package clover.tsp.front.repository.interfaces
 
-import clover.tsp.front.domain.{ DBItem, TSPTask }
-import clover.tsp.front._
+import clover.tsp.front.domain.{ DBItem, TSPTask, TodoId, TodoItem, TodoItemPatchForm, TodoItemPostForm }
 import zio._
 
 trait Repository extends Serializable {
