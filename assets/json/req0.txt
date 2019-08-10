@@ -1,8 +1,8 @@
 {
    "sink":{
-      "jdbcUrl":"",
-      "password":"",
-      "userName":"",
+      "jdbcUrl":"jdbc:postgresql://localhost:5434/test_db",
+      "password":"test_password",
+      "userName":"test_user",
       "rowSchema":{
          "values": ["1565027500", "1565027600", "test", "2", "4", "6", "test"],
          "toTsField":"to_ts",
@@ -21,7 +21,7 @@
          ],
          "processingTsField":"processing_ts"
       },
-      "tableName":"events_2te116u_test_tsp",
+      "tableName":"test_table",
       "driverName":"org.postgresql.Driver",
       "parallelism":1,
       "batchInterval":5000
