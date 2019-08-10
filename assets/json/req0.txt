@@ -21,7 +21,7 @@
          ],
          "processingTsField":"processing_ts"
       },
-      "tableName":"events_2te116u_test_tsp",
+      "tableName":"test_table",
       "driverName":"org.postgresql.Driver",
       "parallelism":1,
       "batchInterval":5000
