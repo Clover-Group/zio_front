@@ -1,10 +1,11 @@
 package clover.tsp.front.domain
 
-// import io.circe.generic.JsonCodec
-
 final case class KafkaSink(
   driverName: String,
   topic: String,
+  server: String,
+  client: String,
+  group: String,
   parallelism: Int,
   batchInterval: Int,
   rowSchema: RowSchema
@@ -15,6 +16,9 @@ final case class KafkaSource(
   driverName: String,
   columns: List[String],
   topic: String,
+  server: String,
+  client: String,
+  group: String,
   parallelism: Int,
   datetimeField: String,
   eventsMaxGapMs: Int,
