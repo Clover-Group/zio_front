@@ -1,17 +1,22 @@
-val Http4sVersion     = "0.21.0-M3"
-val CirceVersion      = "0.12.0-RC1"
-val LogbackVersion    = "1.2.3"
-val ScalaLogVersion   = "3.9.2"
-val PureConfigVersion = "0.11.1"
-val ZioVersion        = "1.0.0-RC11-1"
-val ZioCatsVersion    = "2.0.0.0-RC2"
-val CatsVersion       = "2.0.0-M4"
-val CatsEffVersion    = "2.0.0-M5"
-val DoobieVersion     = "0.8.0-M3"
-val H2Version         = "1.4.199"
-val FlywayVersion     = "5.2.4"
-val Specs2Version     = "4.7.0"
-val ParadiseVersion   = "2.1.1"
+val Http4sVersion              = "0.21.0-M3"
+val CirceVersion               = "0.12.0-RC1"
+val LogbackVersion             = "1.2.3"
+val ScalaLogVersion            = "3.9.2"
+val PureConfigVersion          = "0.11.1"
+val ZioVersion                 = "1.0.0-RC11-1"
+val ZioCatsVersion             = "2.0.0.0-RC2"
+val CatsVersion                = "2.0.0-M4"
+val CatsEffVersion             = "2.0.0-M5"
+val DoobieVersion              = "0.8.0-M3"
+val H2Version                  = "1.4.199"
+val FlywayVersion              = "5.2.4"
+val Specs2Version              = "4.7.0"
+val ParadiseVersion            = "2.1.1"
+val DoobiePostgresVersion      = "0.7.0"
+val TestContainersVersion      = "0.29.0"
+val PostgreSQLContainerVersion = "1.11.3"
+val SLF4JVerson                = "1.7.21"
+val PostgreSQLDriverVersion    = "42.2.6"
 
 resolvers += Resolver.sonatypeRepo("snapshots")
 
@@ -27,10 +32,10 @@ libraryDependencies ++= Seq(
   "dev.zio"                    %% "zio-interop-cats"       % ZioCatsVersion,
   "org.typelevel"              %% "cats-core"              % CatsVersion,
   "org.typelevel"              %% "cats-effect"            % CatsEffVersion,
-  "com.dimafeng"               %% "testcontainers-scala"   % "0.27.0",
-  "org.testcontainers"         % "postgresql"              % "1.11.3" % "test",
-  "org.slf4j"                  % "slf4j-simple"            % "1.7.21",
-  "org.postgresql"             % "postgresql"              % "9.4-1206-jdbc42",
+  "com.dimafeng"               %% "testcontainers-scala"   % TestContainersVersion,
+  "org.testcontainers"         % "postgresql"              % PostgreSQLContainerVersion % Test,
+  "org.slf4j"                  % "slf4j-simple"            % SLF4JVerson,
+  "org.postgresql"             % "postgresql"              % PostgreSQLDriverVersion,
   "org.http4s"                 %% "http4s-blaze-server"    % Http4sVersion,
   "org.http4s"                 %% "http4s-blaze-client"    % Http4sVersion,
   "org.http4s"                 %% "http4s-circe"           % Http4sVersion,
@@ -41,7 +46,7 @@ libraryDependencies ++= Seq(
   "org.tpolecat"               %% "doobie-core"            % DoobieVersion,
   "org.tpolecat"               %% "doobie-h2"              % DoobieVersion,
   "org.tpolecat"               %% "doobie-hikari"          % DoobieVersion,
-  "org.tpolecat"               %% "doobie-postgres"        % "0.7.0",
+  "org.tpolecat"               %% "doobie-postgres"        % DoobiePostgresVersion,
   "com.h2database"             % "h2"                      % H2Version,
   "org.flywaydb"               % "flyway-core"             % FlywayVersion,
   "ch.qos.logback"             % "logback-classic"         % LogbackVersion,

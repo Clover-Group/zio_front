@@ -57,7 +57,7 @@ final case class DBService[R <: Repository](rootUri: String, pgRepository: Postg
               chSinkRepository.insertOne()
             case PgTSPTask(_, sink, _, _, _) =>
               logger.info("Postgres JSON received")
-              val columns        = List(sink.rowSchema.fromTsField, sink.rowSchema.toTsField)
+              val columns = List(sink.rowSchema.fromTsField, sink.rowSchema.toTsField)
 
               val insert = PgInsert(
                 sink.tableName,
