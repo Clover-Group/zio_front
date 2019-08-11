@@ -22,5 +22,5 @@ run clover.http.front.Main
 
 #### For example, launch of integration test:
 ```
-python -m unittest tests.integration.test_clickhouse.ClickHouseTestCase
+python -m unittest tests.integration.test_integration.SimpleIntegrationTestCase
 ```

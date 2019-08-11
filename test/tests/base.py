@@ -15,6 +15,13 @@ class BaseTestCase(unittest.TestCase):
         config_path = Path(__file__).parent.parent / Path('config.yml')
         self.config = lya.AttrDict.from_yaml(str(config_path))
 
+        self.server_url = 'http://{0}:{1}'.format(
+            self.config['test_server']['host'],
+            self.config['test_server']['port']
+        )
+
+        self.server_path = '{0}/tsp_processing'.format(self.server_url)
+
 
 class BaseIntegrationTestCase(BaseTestCase):
     """
