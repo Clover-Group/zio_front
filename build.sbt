@@ -5,6 +5,7 @@ val ScalaLogVersion   = "3.9.2"
 val PureConfigVersion = "0.11.1"
 val ZioVersion        = "1.0.0-RC11-1"
 val ZioCatsVersion    = "2.0.0.0-RC2"
+val CatsVersion       = "2.0.0-M4"
 val CatsEffVersion    = "2.0.0-M5"
 val DoobieVersion     = "0.8.0-M3"
 val H2Version         = "1.4.199"
@@ -24,7 +25,12 @@ libraryDependencies ++= Seq(
   "org.specs2"                 %% "specs2-core"            % Specs2Version % Test,
   "dev.zio"                    %% "zio"                    % ZioVersion,
   "dev.zio"                    %% "zio-interop-cats"       % ZioCatsVersion,
+  "org.typelevel"              %% "cats-core"              % CatsVersion,
   "org.typelevel"              %% "cats-effect"            % CatsEffVersion,
+  "com.dimafeng"               %% "testcontainers-scala"   % "0.27.0",
+  "org.testcontainers"         % "postgresql"              % "1.11.3" % "test",
+  "org.slf4j"                  % "slf4j-simple"            % "1.7.21",
+  "org.postgresql"             % "postgresql"              % "9.4-1206-jdbc42",
   "org.http4s"                 %% "http4s-blaze-server"    % Http4sVersion,
   "org.http4s"                 %% "http4s-blaze-client"    % Http4sVersion,
   "org.http4s"                 %% "http4s-circe"           % Http4sVersion,
@@ -35,6 +41,7 @@ libraryDependencies ++= Seq(
   "org.tpolecat"               %% "doobie-core"            % DoobieVersion,
   "org.tpolecat"               %% "doobie-h2"              % DoobieVersion,
   "org.tpolecat"               %% "doobie-hikari"          % DoobieVersion,
+  "org.tpolecat"               %% "doobie-postgres"        % "0.7.0",
   "com.h2database"             % "h2"                      % H2Version,
   "org.flywaydb"               % "flyway-core"             % FlywayVersion,
   "ch.qos.logback"             % "logback-classic"         % LogbackVersion,
