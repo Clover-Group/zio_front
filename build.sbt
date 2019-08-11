@@ -1,15 +1,17 @@
-val Http4sVersion     = "0.21.0-M3"
-val CirceVersion      = "0.12.0-RC1"
-val LogbackVersion    = "1.2.3"
-val ScalaLogVersion   = "3.9.2"
-val PureConfigVersion = "0.11.1"
-val ZioVersion        = "1.0.0-RC11-1"
-val ZioCatsVersion    = "2.0.0.0-RC2"
-val DoobieVersion     = "0.8.0-RC1"
-val H2Version         = "1.4.199"
-val FlywayVersion     = "5.2.4"
-val Specs2Version     = "4.7.0"
-val ParadiseVersion   = "2.1.1"
+val ZioVersion            = "1.0.0-RC11-1"
+val ZioCatsVersion        = "2.0.0.0-RC2"
+val DoobieVersion         = "0.8.0-RC1"
+val Http4sVersion         = "0.21.0-M3"
+val CirceVersion          = "0.12.0-RC1"
+val LogbackVersion        = "1.2.3"
+val ScalaLogVersion       = "3.9.2"
+val PureConfigVersion     = "0.11.1"
+val H2Version             = "1.4.199"
+val FlywayVersion         = "5.2.4"
+val Specs2Version         = "4.7.0"
+val TestContainersVersion = "0.29.0"
+val PSQLContainerVersion  = "1.12.0"
+val PSQLDriverVersion     = "42.2.6"
 
 resolvers += Resolver.sonatypeRepo("snapshots")
 
@@ -33,6 +35,7 @@ libraryDependencies ++= Seq(
   "org.tpolecat"               %% "doobie-core"            % DoobieVersion,
   "org.tpolecat"               %% "doobie-h2"              % DoobieVersion,
   "org.tpolecat"               %% "doobie-hikari"          % DoobieVersion,
+  "org.tpolecat"               %% "doobie-postgres"        % DoobieVersion,
   "com.h2database"             % "h2"                      % H2Version,
   "org.flywaydb"               % "flyway-core"             % FlywayVersion,
   "ch.qos.logback"             % "logback-classic"         % LogbackVersion,
@@ -45,7 +48,7 @@ scalacOptions --= Seq(
   "-Xfatal-warnings"
 )
 
-addCompilerPlugin("org.scalamacros" % "paradise" % ParadiseVersion cross CrossVersion.full)
+addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.1" cross CrossVersion.full)
 
 addCommandAlias("fmt", "all scalafmtSbt scalafmt test:scalafmt")
 addCommandAlias("chk", "all scalafmtSbtCheck scalafmtCheck test:scalafmtCheck")

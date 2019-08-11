@@ -2,6 +2,10 @@ package clover.tsp.front.specs2
 
 import java.nio.file.Paths
 
+import clover.tsp.front.repository.implementations.PostgresRepository._
+import clover.tsp.front.repository.implementations.PostgresRepository
+
+import com.dimafeng.testcontainers.PostgreSQLContainer
 import clover.tsp.front.domain.DBItem
 import clover.tsp.front.http.DBService
 import io.circe.literal._
@@ -9,10 +13,10 @@ import io.circe.parser._
 import org.specs2.specification.core.SpecStructure
 import org.http4s.implicits._
 import org.http4s.dsl.Http4sDsl
-import zio.{ Ref, Task, UIO, ZIO }
+import zio.{ IO, Ref, Task, UIO, ZIO }
 import zio.interop.catz._
 import zio.DefaultRuntime
-import io.circe.generic.auto._
+import doobie.implicits._
 
 import scala.io.Source
 import java.io.{ File, FileInputStream }
@@ -20,6 +24,7 @@ import java.nio.charset.StandardCharsets
 
 import clover.tsp.front.repository.implementations
 import clover.tsp.front.repository.interfaces.Repository
+import doobie.util.transactor.Transactor
 import io.circe.Json
 import org.http4s.{ Method, Status }
 
@@ -33,14 +38,15 @@ class TSPProcessingSpec extends HTTPSpec2 {
   val currentPath     = Paths.get(".").toAbsolutePath
   val filePath        = s"$currentPath/assets/json/req0.txt"
   val pathToKafkaJson = s"$currentPath/assets/json/loco/kafka.json"
+  val pathToPgJson    = s"$currentPath/assets/json/postgres.json"
 
   override def is: SpecStructure =
     s2"""
         TSP REST Service should
-          retrieve info about DB                 $t1
-          status should be Ok                    $t2
-          retrieve info about DB with status OK  $t3
-          should invoke kafka service            $t4
+          status should be Ok                    $t1
+          retrieve info about DB with status OK  $t2
+          should call kafka service              $t3
+          should call Postgres service           $t4
       """
 
   def closeStream(is: FileInputStream) = UIO(is.close())
@@ -58,26 +64,6 @@ class TSPProcessingSpec extends HTTPSpec2 {
     runWithEnv(
       for {
 
-        file <- Task(new File(filePath))
-        len  = file.length
-
-        buffer   <- ZIO.effect(Source.fromFile(filePath)).mapError(_ => new Throwable("Fail to open the file"))
-        jsonData = buffer.mkString
-        _        <- ZIO.effect(buffer.close).mapError(_ => new Throwable("Fail to close the file"))
-        parseResult <- ZIO
-                        .effect(parse(jsonData).getOrElse(Json.Null))
-                        .mapError(_ => new Throwable("JSON parse failed"))
-        req          = request[TSPTaskDTO](Method.POST, "/").withEntity(json"""$parseResult""")
-        res          <- ZIO.effect(app.run(req)).mapError(_ => new Throwable("HTTP effect failed"))
-        response     <- res
-        responseBody <- response.as[DBItem]
-
-      } yield responseBody === DBItem("some data")
-    )
-  def t2 =
-    runWithEnv(
-      for {
-
         buffer   <- ZIO.effect(Source.fromFile(filePath)).mapError(_ => new Throwable("Fail to open the file"))
         jsonData = buffer.mkString
         _        <- ZIO.effect(buffer.close).mapError(_ => new Throwable("Fail to close the file"))
@@ -91,7 +77,7 @@ class TSPProcessingSpec extends HTTPSpec2 {
       } yield status === Status.Ok
     )
 
-  def t3 =
+  def t2 =
     runWithEnv(
       for {
         file <- Task(new File(filePath))
@@ -103,38 +89,72 @@ class TSPProcessingSpec extends HTTPSpec2 {
         parseResult <- ZIO
                         .effect(parse(finalJson).getOrElse(Json.Null))
                         .mapError(_ => new Throwable("JSON parse failed"))
-        req          = request[TSPTaskDTO](Method.POST, "/").withEntity(json"""$parseResult""")
-        res          <- ZIO.effect(app.run(req)).mapError(_ => new Throwable("HTTP effect failed"))
-        response     <- res
-        responseBody <- response.as[DBItem]
-        status       = response.status
-      } yield (responseBody, status).equals((DBItem("some data"), Status.Ok))
+        req      = request[TSPTaskDTO](Method.POST, "/").withEntity(json"""$parseResult""")
+        res      <- ZIO.effect(app.run(req)).mapError(_ => new Throwable("HTTP effect failed"))
+        response <- res
+        status   = response.status
+      } yield status.equals(Status.Ok)
     )
 
-  def t4 =
+  def t3 =
     runWithEnv(
       for {
         file <- Task(new File(pathToKafkaJson))
         len  = file.length
         jsonData <- Task(new FileInputStream(file))
                      .bracket(closeStream)(convertBytes(_, len))
-                     .mapError(_ => new Throwable("Error when working with file"))
+                     .mapError(error => new Throwable(s"Error when working with file $error"))
         finalJson = jsonData
         parseResult <- ZIO
                         .effect(parse(finalJson).getOrElse(Json.Null))
                         .mapError(_ => new Throwable("JSON parse failed"))
+        req      = request[TSPTaskDTO](Method.POST, "/").withEntity(json"""$parseResult""")
+        res      <- ZIO.effect(app.run(req)).mapError(_ => new Throwable("HTTP effect failed"))
+        response <- res
+        status   = response.status
+      } yield status.equals(Status.Ok)
+    )
+
+  def t4 =
+    runWithEnv(
+      for {
+        file <- Task(new File(pathToPgJson))
+        len  = file.length
+        jsonData <- Task(new FileInputStream(file))
+                     .bracket(closeStream)(convertBytes(_, len))
+                     .mapError(error => new Throwable(s"Error when working with file $error"))
+        finalJson = jsonData
+        parseResult <- ZIO
+                        .effect(parse(finalJson).getOrElse(Json.Null))
+                        .mapError(_ => new Throwable("JSON parse failed"))
+        container    <- ZIO(PostgreSQLContainer())
+        _            <- IO.effectTotal(container.start())
+        xa           = getTransactor(container)
+        pgRepository = PostgresRepository(xa)
+        _            <- pgRepository.createTable(sql"""CREATE TABLE IF NOT EXISTS test_table (
+                                                      from_ts BIGINT,
+                                                      to_ts BIGINT
+                                                      )""")
         req          = request[TSPTaskDTO](Method.POST, "/").withEntity(json"""$parseResult""")
-        res          <- ZIO.effect(app.run(req)).mapError(_ => new Throwable("HTTP effect failed"))
-        response     <- res
-        responseBody <- response.as[DBItem]
-        status       = response.status
-      } yield (responseBody, status).equals((DBItem("some data"), Status.Ok))
+        res <- ZIO
+                .effect(DBService[Repository]("", pgRepository).service.orNotFound.run(req))
+                .mapError(_ => new Throwable("HTTP effect failed"))
+        response <- res
+        status   = response.status
+      } yield status.equals(Status.Ok)
     )
 }
 
 object TSPProcessingSpec extends DefaultRuntime {
 
-  val dbInfoService: DBService[Repository] = DBService[Repository]("")
+  val xa: Transactor[Task] = Transactor.fromDriverManager[Task](
+    "org.postgresql.Driver",
+    "jdbc:postgresql://localhost:5434/test_db",
+    "test_user",
+    "test_password"
+  )
+  val pgRepository: PostgresRepository     = PostgresRepository(xa)
+  val dbInfoService: DBService[Repository] = DBService[Repository]("", pgRepository)
 
   val mkEnv: UIO[Repository] =
     for {
