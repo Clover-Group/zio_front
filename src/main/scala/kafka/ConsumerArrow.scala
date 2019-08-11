@@ -7,6 +7,7 @@ import zio.kafka.client.KafkaTestUtils.{ pollNtimes }
 import zio.kafka.client.{ Consumer, Subscription }
 import KafkaPkg._
 import kafkaConsumer.KafkaConsumer.{ settings }
+import com.typesafe.scalalogging.Logger
 
 import ArrowPkg._
 
@@ -18,7 +19,17 @@ object KafkaArrowConsumer extends KafkaArrowConsumer {
 
   type BArr = Array[Byte]
 
+  val cfg = SlaveConfig(
+    server = "37.228.115.243:9092",
+    client = "client5",
+    group = "group5",
+    topic = "batch_record_small_stream_writer"
+  )
+
   def run(cfg: SlaveConfig): Unit = {
+    val logger = Logger("KafkaService")
+    logger.info("Running Kafka")
+
     val subscription = Subscription.Topics(Set(cfg.topic))
     val cons         = Consumer.make[String, BArr](settings(cfg))(Serdes.String, Serdes.ByteArray)
 
