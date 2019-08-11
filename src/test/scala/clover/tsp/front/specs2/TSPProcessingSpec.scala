@@ -127,15 +127,15 @@ class TSPProcessingSpec extends HTTPSpec2 {
         parseResult <- ZIO
                         .effect(parse(finalJson).getOrElse(Json.Null))
                         .mapError(_ => new Throwable("JSON parse failed"))
-         container    <- ZIO(PostgreSQLContainer())
-         _            <- IO.effectTotal(container.start())
-         xa           = getTransactor(container)
+        container    <- ZIO(PostgreSQLContainer())
+        _            <- IO.effectTotal(container.start())
+        xa           = getTransactor(container)
         pgRepository = PostgresRepository(xa)
         _            <- pgRepository.createTable(sql"""CREATE TABLE IF NOT EXISTS test_table (
                                                       from_ts BIGINT,
                                                       to_ts BIGINT
                                                       )""")
-        req = request[TSPTaskDTO](Method.POST, "/").withEntity(json"""$parseResult""")
+        req          = request[TSPTaskDTO](Method.POST, "/").withEntity(json"""$parseResult""")
         res <- ZIO
                 .effect(DBService[Repository]("", pgRepository).service.orNotFound.run(req))
                 .mapError(_ => new Throwable("HTTP effect failed"))

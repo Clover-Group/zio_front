@@ -20,19 +20,17 @@ case class PostgresRepository(tnx: Transactor[Task]) {
         Task.fail(err)
       }, _ => Task.succeed(()))
 
-  def write(insert: PgInsert): Task[Unit] = {
+  def write(insert: PgInsert): Task[Unit] =
     sql"""INSERT INTO ${insert.tableName} (${insert.columns.mkString(",")}) VALUES (${insert.values.mkString(",")})""".update.run
       .transact(tnx)
       .foldM(err => Task.fail(err), _ => Task.succeed(insert))
-  }
 
-  def getByQuery(sql: Fragment): Task[List[String]] = {
-      sql
+  def getByQuery(sql: Fragment): Task[List[String]] =
+    sql
       .query[String]
       .to[List]
       .transact(tnx)
       .foldM(err => Task.fail(err), list => Task.succeed(list))
-  }
 
 }
 
