@@ -51,14 +51,13 @@ final case class DBService[R <: Repository](rootUri: String, pgRepository: Postg
             case KafkaTSPTask(_, _, _, _) =>
               // TODO call instance of kafka service
               logger.info("Kafka JSON received")
-            case chJson @ CHTSPTask(_, _, _, source) =>
+            case chJson @ CHTSPTask(_, _, _, _) =>
               logger.info("ClickHouse JSON received")
               val chSinkRepository = CHSinkRepository(chJson.sink)
               chSinkRepository.insertOne()
             case PgTSPTask(_, sink, _, _, _) =>
               logger.info("Postgres JSON received")
               val columns        = List(sink.rowSchema.fromTsField, sink.rowSchema.toTsField)
-              val List(from, to) = sink.rowSchema.values
 
               val insert = PgInsert(
                 sink.tableName,
