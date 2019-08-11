@@ -28,11 +28,8 @@ final case class InfluxDBSource(
 )
 
 final case class InfluxDBTSPTask(
-
   sink: InfluxDBSink,
   uuid: String,
   patterns: List[Rule],
   source: InfluxDBSource
-
- )
-
+)
