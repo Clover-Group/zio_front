@@ -3,9 +3,10 @@ package clover.tsp.front
 import cats.effect.{ Blocker, ExitCode }
 import clover.tsp.front.config.{ initDb, mkTransactor, Config }
 import clover.tsp.front.domain.DBItem
+import doobie.util.transactor.Transactor
 import clover.tsp.front.http.DBService
 import clover.tsp.front.repository.implementations
-import clover.tsp.front.repository.implementations.DoobieRepository
+import clover.tsp.front.repository.implementations.{ DoobieRepository, PostgresRepository }
 import clover.tsp.front.repository.interfaces.Repository
 import org.http4s.implicits._
 import org.http4s.server.Router
@@ -32,8 +33,15 @@ object Main extends App {
       block       = Blocker.liftExecutionContext(blockingEC)
       transactorR = mkTransactor(cfg.dbConfig, Platform.executor.asEC, block)
 
+      xa = Transactor.fromDriverManager[Task](
+        "org.postgresql.Driver",
+        "jdbc:postgresql://localhost:5434/test_db",
+        "test_user",
+        "test_password"
+      )
+      pgRepository = PostgresRepository(xa)
       httpApp = Router[AppTask](
-        "/tsp_processing" -> DBService(s"${cfg.appConfig.baseUrl}/db_info").service
+        "/tsp_processing" -> DBService(s"${cfg.appConfig.baseUrl}/db_info", pgRepository).service
       ).orNotFound
       server = ZIO.runtime[AppEnvironment].flatMap { implicit rts =>
         BlazeServerBuilder[AppTask]

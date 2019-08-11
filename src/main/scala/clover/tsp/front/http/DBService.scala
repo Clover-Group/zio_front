@@ -1,11 +1,12 @@
 package clover.tsp.front.http
 
-import clover.tsp.front.domain.{ CHTSPTask, KafkaTSPTask, TSPTask }
+import clover.tsp.front.domain.{ CHTSPTask, KafkaTSPTask, PgTSPTask, TSPTask }
+import clover.tsp.front.repository.implementations.{ PgInsert, PostgresRepository }
 import org.http4s.circe._
 import org.http4s.dsl.Http4sDsl
 import org.http4s.{ EntityDecoder, EntityEncoder, HttpRoutes }
 import com.typesafe.scalalogging.Logger
-import zio.RIO
+import zio.{ RIO, ZIO }
 import zio.interop.catz._
 import cats.syntax.functor._
 import clover.tsp.front.repository.implementations.CHSinkRepository
@@ -13,9 +14,8 @@ import io.circe.{ Decoder, Encoder }
 import io.circe.generic.auto._
 import io.circe.syntax._
 import clover.tsp.front.repository.interfaces.Repository
-import clover.tsp.front.repository.simpleRepository
 
-final case class DBService[R <: Repository](rootUri: String) {
+final case class DBService[R <: Repository](rootUri: String, pgRepository: PostgresRepository) {
   type TSPTaskDTO[A] = RIO[R, A]
 
   implicit def tspTaskJsonDecoder[A](implicit decoder: Decoder[A]): EntityDecoder[TSPTaskDTO, A] = jsonOf[TSPTaskDTO, A]
@@ -25,10 +25,12 @@ final case class DBService[R <: Repository](rootUri: String) {
   implicit val encodeTask: Encoder[TSPTask] = Encoder.instance {
     case kafkaTask @ KafkaTSPTask(_, _, _, _) => kafkaTask.asJson
     case chTask @ CHTSPTask(_, _, _, _)       => chTask.asJson
+    case pgTask @ PgTSPTask(_, _, _, _, _)    => pgTask.asJson
   }
 
   implicit val decodeEvent: Decoder[TSPTask] =
     List[Decoder[TSPTask]](
+      Decoder[PgTSPTask].widen,
       Decoder[KafkaTSPTask].widen,
       Decoder[CHTSPTask].widen
     ).reduceLeft(_ or _)
@@ -45,21 +47,27 @@ final case class DBService[R <: Repository](rootUri: String) {
         logger.info("Root method called")
         for {
           task <- req.as[TSPTask]
-          dbInfoItem <- task match {
-                         case kafkaJson @ KafkaTSPTask(_, _, _, _) =>
-                           // TODO call instance of kafka service
-                           logger.info("Kafka JSON received")
-                           simpleRepository.get(kafkaJson)
+          _ = task match {
+            case KafkaTSPTask(_, _, _, _) =>
+              // TODO call instance of kafka service
+              logger.info("Kafka JSON received")
+            case chJson @ CHTSPTask(_, _, _, _) =>
+              logger.info("ClickHouse JSON received")
+              val chSinkRepository = CHSinkRepository(chJson.sink)
+              chSinkRepository.insertOne()
+            case PgTSPTask(_, sink, _, _, _) =>
+              logger.info("Postgres JSON received")
+              val columns        = List(sink.rowSchema.fromTsField, sink.rowSchema.toTsField)
 
-                         case chJson @ CHTSPTask(_, _, _, _) =>
-                           logger.info("ClickHouse JSON received")
+              val insert = PgInsert(
+                sink.tableName,
+                columns,
+                sink.rowSchema.values
+              )
+              pgRepository.write(insert)
 
-                           val chSinkRepository = CHSinkRepository(chJson.sink)
-                           chSinkRepository.insertOne()
-
-                           simpleRepository.get(chJson)
-                       }
-          res <- Ok(dbInfoItem)
+          }
+          res <- Ok(ZIO.effect(()))
         } yield res
     }
 }
