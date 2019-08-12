@@ -12,7 +12,8 @@ val Specs2Version         = "4.7.0"
 val TestContainersVersion = "0.29.0"
 val PSQLContainerVersion  = "1.12.0"
 val PSQLDriverVersion     = "42.2.6"
-val ZIOKafkaVersion       = "8ff9e0a3"
+val ZIOKafkaVersion       = "0.0.1"
+//val ZIOKafkaVersion       = "8ff9e0a3"
 
 resolvers += Resolver.sonatypeRepo("snapshots")
 

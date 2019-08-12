@@ -33,22 +33,23 @@ object KafkaArrowConsumer extends KafkaArrowConsumer {
     val subscription = Subscription.Topics(Set(cfg.topic))
     val cons         = Consumer.make[String, BArr](settings(cfg))(Serdes.String, Serdes.ByteArray)
 
-    unsafeRun(
-      cons.use { r =>
-        for {
-          _         <- r.subscribe(subscription)
-          batch     <- pollNtimes(5, r)
-          _         <- r.unsubscribe
-          arr       = batch.map(_.value)
-          reader    = deserialize(arr)
-          schema    = reader.map(r => r.getVectorSchemaRoot.getSchema)
-          _         = logger.info(s"Schema(1): $schema")
-          empty     = reader.map(r => r.loadNextBatch)
-          bytesRead = reader.map(r => r.bytesRead)
-          rowCount  = reader.map(r => r.getVectorSchemaRoot.getRowCount)
-          _         = logger.info(s"Schema(2): $schema")
-        } yield empty
-      }
-    )
+    val data = cons.use { r =>
+      for {
+        _         <- r.subscribe(subscription)
+        batch     <- pollNtimes(5, r)
+        _         <- r.unsubscribe
+        arr       = batch.map(_.value)
+        reader    = deserialize(arr)
+        schema    = reader.map(r => r.getVectorSchemaRoot.getSchema)
+        _         = logger.info(s"Schema(1): $schema")
+        empty     = reader.map(r => r.loadNextBatch)
+        bytesRead = reader.map(r => r.bytesRead)
+        rowCount  = reader.map(r => r.getVectorSchemaRoot.getRowCount)
+        _         = logger.info(s"Schema(2): $schema")
+      } yield empty
+    }
+
+    val out = unsafeRun(data)
+    println(out)
   }
 }

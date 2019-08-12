@@ -2,7 +2,7 @@ package clover.tsp.front.repository.implementations
 
 import KafkaPkg._
 import arrowConsumer._
-import kafkaConsumer.KafkaConsumer.{ settings }
+// import kafkaConsumer.KafkaConsumer.{ settings }
 import clover.tsp.front.domain.KafkaSource
 
 case class KafkaSourceRepository(source: KafkaSource) {

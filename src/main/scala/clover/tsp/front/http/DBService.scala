@@ -15,8 +15,6 @@ import io.circe.generic.auto._
 import io.circe.syntax._
 import clover.tsp.front.repository.interfaces.Repository
 
-import arrowConsumer._
-
 final case class DBService[R <: Repository](rootUri: String, pgRepository: PostgresRepository) {
   type TSPTaskDTO[A] = RIO[R, A]
 
