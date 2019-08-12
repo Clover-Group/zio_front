@@ -2,6 +2,9 @@
   "sink":{
     "driverName": "kafka",
     "topic": "test_topic_sink",
+    "server": "",
+    "client": "",
+    "group": "",
     "rowSchema": {
       "values": ["1565027500", "1565027600", "test", "2", "4", "6", "test"],
       "toTsField": "to_ts",
@@ -51,7 +54,10 @@
       "PowerPolling",
       "PosKM"
     ],
-    "topic":"test_topic_source",
+    "topic":"batch_record_small_stream_writer",
+    "server": "37.228.115.243:9092",
+    "client": "client5",
+    "group": "group5",
     "parallelism":1,
     "datetimeField":"ts",
     "eventsMaxGapMs":60000,

@@ -9,7 +9,7 @@ import com.typesafe.scalalogging.Logger
 import zio.{ RIO, ZIO }
 import zio.interop.catz._
 import cats.syntax.functor._
-import clover.tsp.front.repository.implementations.CHSinkRepository
+import clover.tsp.front.repository.implementations.{ CHSinkRepository, KafkaSourceRepository }
 import io.circe.{ Decoder, Encoder }
 import io.circe.generic.auto._
 import io.circe.syntax._
@@ -50,14 +50,16 @@ final case class DBService[R <: Repository](rootUri: String, pgRepository: Postg
         for {
           task <- req.as[TSPTask]
           _ = task match {
-            case KafkaTSPTask(_, _, _, _) =>
-              // TODO call instance of kafka service
+            case kafkaJson @ KafkaTSPTask(_, _, _, _) =>
               logger.info("Kafka JSON received")
-              KafkaArrowConsumer.run(KafkaArrowConsumer.cfg)
+              val kafkaSourceRepository = KafkaSourceRepository(kafkaJson.source)
+              kafkaSourceRepository.select()
+
             case chJson @ CHTSPTask(_, _, _, _) =>
               logger.info("ClickHouse JSON received")
               val chSinkRepository = CHSinkRepository(chJson.sink)
               chSinkRepository.insertOne()
+
             case PgTSPTask(_, sink, _, _, _) =>
               logger.info("Postgres JSON received")
               val columns = List(sink.rowSchema.fromTsField, sink.rowSchema.toTsField)

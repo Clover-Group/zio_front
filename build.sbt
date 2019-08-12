@@ -12,6 +12,7 @@ val Specs2Version         = "4.7.0"
 val TestContainersVersion = "0.29.0"
 val PSQLContainerVersion  = "1.12.0"
 val PSQLDriverVersion     = "42.2.6"
+val ZIOKafkaVersion       = "8ff9e0a3"
 
 resolvers += Resolver.sonatypeRepo("snapshots")
 
@@ -25,7 +26,7 @@ libraryDependencies ++= Seq(
   "org.specs2"                 %% "specs2-core"            % Specs2Version % Test,
   "dev.zio"                    %% "zio"                    % ZioVersion,
   "dev.zio"                    %% "zio-interop-cats"       % ZioCatsVersion,
-  "dev.zio"                    %% "zio-kafka"              % "0.0.1",
+  "dev.zio"                    %% "zio-kafka"              % ZIOKafkaVersion,
   "com.dimafeng"               %% "testcontainers-scala"   % TestContainersVersion,
   "org.testcontainers"         % "postgresql"              % PSQLContainerVersion % Test,
   "org.postgresql"             % "postgresql"              % PSQLDriverVersion,

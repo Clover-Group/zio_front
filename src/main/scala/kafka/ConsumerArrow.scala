@@ -42,11 +42,11 @@ object KafkaArrowConsumer extends KafkaArrowConsumer {
           arr       = batch.map(_.value)
           reader    = deserialize(arr)
           schema    = reader.map(r => r.getVectorSchemaRoot.getSchema)
-          _         = println(schema)
+          _         = logger.info(s"Schema(1): $schema")
           empty     = reader.map(r => r.loadNextBatch)
           bytesRead = reader.map(r => r.bytesRead)
           rowCount  = reader.map(r => r.getVectorSchemaRoot.getRowCount)
-          _         = println(schema)
+          _         = logger.info(s"Schema(2): $schema")
         } yield empty
       }
     )
