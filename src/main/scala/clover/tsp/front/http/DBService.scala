@@ -70,7 +70,7 @@ final case class DBService[R <: Repository](rootUri: String, pgRepository: Postg
               pgRepository.write(insert)
 
           }
-          res <- Ok(ZIO.effect(()))
+          res <- Ok(ZIO.unit)
         } yield res
     }
 }
